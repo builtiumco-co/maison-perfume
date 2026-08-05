@@ -1372,11 +1372,26 @@ body {
 
 /* Responsive overrides for left-aligned layout */
 @media (max-width: 1024px) {
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 80px;
+  }
   .desktop-nav {
     display: none !important; /* Hide desktop nav and show mobile burger on tablet */
   }
   .mobile-menu-btn {
-    display: block !important;
+    display: flex !important;
+  }
+  .logo-left {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .logo-left a {
+    font-size: 1.4rem;
   }
   .hero-left-aligned {
     padding: 0 8%;
