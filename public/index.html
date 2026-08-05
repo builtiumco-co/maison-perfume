@@ -20,14 +20,30 @@
 
   <header class="header">
     <div class="header-container reveal">
-      <div class="logo"><a href="index.html">MAISON<br>ÉLIXIR</a></div>
-      <div class="header-actions">
-        <nav class="nav">
-          <a href="index.html" class="nav-link active">HOME</a>
-          <a href="shop.html" class="nav-link">SHOP</a>
-          <a href="about.html" class="nav-link">ABOUT US</a>
-          <a href="contact.html" class="nav-link">CONTACT</a>
-        </nav>
+      <button class="mobile-menu-btn" id="mobile-menu-trigger" aria-label="Open Menu">
+        <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="logo-centered">
+        <a href="index.html">MAISON<br>ÉLIXIR</a>
+      </div>
+
+      <div class="header-right-actions">
+        <button class="header-icon-btn search-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="header-icon-btn wishlist-btn" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+          </svg>
+        </button>
         <a href="cart.html" class="cart-trigger">
           <svg class="cart-icon" viewBox="0 0 24 24">
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
@@ -38,28 +54,25 @@
     </div>
   </header>
 
-  <main class="hero">
-    <div class="hero-container">
-      <div class="hero-left reveal">
-        <span class="hero-subtitle" style="display:block; font-size:0.85rem; font-weight:700; color:var(--accent); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:20px;">NEW · SIGNATURE COLLECTION</span>
-        <h1 class="hero-title">The Art of<br>Scent</h1>
-        <p class="hero-description" style="font-size:1.1rem; line-height:1.7; opacity:0.8; margin-bottom:40px; max-width:450px;">Artisanal fragrances crafted with the world's rarest ingredients. Each scent tells a story — discover yours.</p>
-        <div style="display: flex; align-items: center; gap: 15px;">
-          <a href="shop.html" class="btn-pill">
-            <span>SHOP THE COLLECTION</span>
-            <svg class="icon-arrow" style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-          <a href="shop.html" class="btn-pill-outline">DISCOVER BLANC SANTAL</a>
-        </div>
+  <main class="hero-centered">
+    <div class="hero-bg-overlay"></div>
+    <div class="hero-centered-content reveal">
+      <span class="hero-subtitle">NEW · SIGNATURE COLLECTION</span>
+      <h1 class="hero-title">The Art of<br>Scent</h1>
+      <p class="hero-description">Artisanal fragrances crafted with the world's rarest ingredients. Each scent tells a story — discover yours.</p>
+      <div class="hero-buttons">
+        <a href="shop.html" class="btn-pill">
+          <span>SHOP THE COLLECTION</span>
+          <svg class="icon-arrow" style="width:16px;height:16px;fill:currentColor;" viewBox="0 0 24 24">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href="shop.html" class="btn-pill-outline">DISCOVER BLANC SANTAL</a>
       </div>
-      <div class="hero-right reveal">
-        <div class="hero-image-swiper">
-          <img src="assets/images/hero1.jpg" alt="Wild Black" class="hero-img active">
-          <img src="assets/images/hero2.jpg" alt="Blanc Santal" class="hero-img">
-          <img src="assets/images/hero3.jpg" alt="Citrus Breeze" class="hero-img">
-        </div>
+    </div>
+    <div class="scroll-indicator">
+      <div class="mouse-icon">
+        <div class="wheel"></div>
       </div>
     </div>
   </main>

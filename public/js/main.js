@@ -539,45 +539,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. MOBILE HAMBURGER MENU
+        // 8. MOBILE HAMBURGER MENU
     function injectMobileMenu() {
-        const headerActions = document.querySelector('.header-actions');
-        if (!headerActions) return;
-
-        const nav = document.querySelector('.nav');
-
-        const burger = document.createElement('button');
-        burger.className = 'mobile-menu-btn';
-        burger.innerHTML = `
-            <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        `;
+        const burger = document.getElementById('mobile-menu-trigger');
+        if (!burger) return;
 
         const mobileMenu = document.createElement('div');
         mobileMenu.className = 'mobile-menu-overlay';
         
         const mobileBackdrop = document.createElement('div');
         mobileBackdrop.className = 'mobile-backdrop';
-        let links = '';
-        if (nav) {
-            nav.querySelectorAll('a').forEach(a => {
-                links += `<a href="${a.href}" class="${a.className}">${a.textContent}</a>`;
-            });
-        } else {
-            links = `
-                <a href="index.html" class="nav-link">HOME</a>
-                <a href="shop.html" class="nav-link">SHOP</a>
-                <a href="about.html" class="nav-link">ABOUT US</a>
-                <a href="contact.html" class="nav-link">CONTACT</a>
-            `;
-        }
+        
+        const links = `
+            <a href="index.html" class="nav-link">HOME</a>
+            <a href="shop.html" class="nav-link">SHOP</a>
+            <a href="about.html" class="nav-link">ABOUT US</a>
+            <a href="contact.html" class="nav-link">CONTACT</a>
+        `;
 
         mobileMenu.innerHTML = `
             <div class="mobile-menu-header">
-                <h2>ANTIGRAVITY</h2>
+                <h2>MAISON ÉLIXIR</h2>
                 <button class="close-mobile-btn" style="font-weight: 300;">&times;</button>
             </div>
             <div class="mobile-menu-links">
@@ -587,17 +569,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.body.appendChild(mobileBackdrop);
         document.body.appendChild(mobileMenu);
-        headerActions.insertBefore(burger, headerActions.firstChild);
 
         const style = document.createElement('style');
         style.textContent = `
-            .mobile-menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 5px; color: var(--primary); margin-right: 15px; }
             .mobile-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 10000; opacity: 0; pointer-events: none; transition: 0.4s; }
             .mobile-backdrop.active { opacity: 1; pointer-events: all; }
             .mobile-menu-overlay { position: fixed; top: 0; right: 0; width: 85vw; max-width: 400px; height: 100vh; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 10001; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 40px rgba(0,0,0,0.08); border-left: 1px solid rgba(255,255,255,0.4); }
             .mobile-menu-overlay.active { transform: translateX(0); }
             .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 35px 40px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-            .mobile-menu-header h2 { font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; letter-spacing: 0.15em; margin: 0; }
+            .mobile-menu-header h2 { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; letter-spacing: 0.1em; margin: 0; }
             .close-mobile-btn { background: none; border: none; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; margin-top: -5px; transition: 0.3s; }
             .close-mobile-btn:hover { color: black; transform: rotate(90deg) scale(1.1); }
             .mobile-menu-links { display: flex; flex-direction: column; gap: 35px; padding: 60px 40px; }
@@ -605,7 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .mobile-menu-links a::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 0; height: 2px; background: black; transition: 0.3s; }
             .mobile-menu-links a:hover, .mobile-menu-links a.active { opacity: 1; transform: translateX(15px); }
             .mobile-menu-links a:hover::after, .mobile-menu-links a.active::after { width: 100%; }
-            @media (max-width: 768px) { .mobile-menu-btn { display: block; } }
         `;
         document.head.appendChild(style);
 
