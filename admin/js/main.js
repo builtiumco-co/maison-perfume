@@ -1,13 +1,11 @@
-// TOP SLIDES | Admin Dashboard Logic
-// Implementation based on PRD v1.0
-
-// 0. Security Enforcement (HTTPS Only)
+// MAISON ÉLIXIR | Admin Dashboard Logic
+// Security Enforcement (HTTPS Only)
 if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
     window.location.replace(`https:${window.location.href.substring(window.location.protocol.length)}`);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 0. AUTH PROTECTION
+    // 0. AUTH PROTECTION & SUPABASE INITIALIZATION
     const SUPABASE_URL = 'https://myrqlqstzakmnxfenlzg.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15cnFscXN0emFrbW54ZmVubHpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NzczMTAsImV4cCI6MjEwMTQ1MzMxMH0.OovcIHrIY30kAVs2CU1DI6nhU6tpVpD0N4QHTSAY2ss';
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -25,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }[tag] || tag)
         );
     }
-
 
     // 0. AUTH PROTECTION + 10 MINUTE SESSION TIMEOUT
     const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes in ms
@@ -96,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Update URL hash without jumping
             history.pushState(null, null, `#${targetPage}`);
 
-            // NEW: Refresh Data on Load
+            // Refresh Data on Load
             if (targetPage === 'orders') loadOrders();
             if (targetPage === 'products') loadProducts();
             if (targetPage === 'inventory') loadInventory();
@@ -110,7 +107,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (targetNav) targetNav.click();
     }
 
-
     // Date Filter Initialization (Defaults to Today)
     const dateFilter = document.getElementById('order-date-filter');
     if (dateFilter) {
@@ -118,7 +114,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         dateFilter.addEventListener('change', () => loadOrders());
     }
 
-    // 2. SUPABASE INTEGRATION is already handled by auth check above
     // Initial Load
     loadOrders();
     loadProducts();
@@ -135,9 +130,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             .subscribe();
     }
 
-    let allOrders = []; // New cache for viewing details
+    let allOrders = []; // Cache for viewing details
 
-    // 4. ORDERS MANAGEMENT (Only Paid Orders - PRD 2.0 Update)
+    // 4. ORDERS MANAGEMENT
     async function loadOrders() {
         const filterEl = document.getElementById('order-date-filter');
         const selectedDate = filterEl ? filterEl.value : null;
@@ -156,13 +151,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const { data: orders, error } = await query.order('created_at', { ascending: false });
 
         if (error) return console.error('Error:', error);
-        allOrders = orders; // Cache
-        renderOrders(orders);
+        allOrders = orders || [];
+        renderOrders(allOrders);
     }
 
     function renderOrders(orders) {
         const tbody = document.getElementById('orders-tbody');
+        if (!tbody) return;
         tbody.innerHTML = '';
+
+        if (!orders || orders.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:40px; color:#888;">No paid orders found for this date.</td></tr>`;
+            return;
+        }
 
         orders.forEach(order => {
             const displayId = order.order_id || order.id.substring(0, 8);
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${escapeHTML(order.customer_name)}</td>
                 <td>${escapeHTML(order.product_name)}</td>
                 <td>₦${Number(order.total_amount).toLocaleString()}</td>
-                <td><span class="status-tag ${escapeHTML(order.order_status)}">${escapeHTML(order.order_status)}</span></td>
+                <td><span class="status-tag ${escapeHTML(order.order_status || 'pending')}">${escapeHTML(order.order_status || 'pending')}</span></td>
                 <td>
                     <div class="flex-row-gap-8">
                         <select class="status-select" data-id="${escapeHTML(order.id)}">
@@ -216,19 +217,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-
     const orderModal = document.getElementById('view-order-modal');
     function openOrderModal(order) {
         const titleEl = document.getElementById('view-order-title');
         if (titleEl) titleEl.textContent = `Order #${order.order_id || order.id.substring(0, 8)}`;
         
-        document.getElementById('v-customer').textContent = order.customer_name;
-        document.getElementById('v-contact').textContent = `${order.customer_email} / ${order.customer_phone}`;
+        document.getElementById('v-customer').textContent = order.customer_name || 'N/A';
+        document.getElementById('v-contact').textContent = `${order.customer_email || ''} / ${order.customer_phone || ''}`;
         document.getElementById('v-whatsapp').textContent = order.is_whatsapp ? '✅ Consent Given' : '❌ No Consent';
         document.getElementById('v-address').textContent = order.customer_address || 'N/A';
-        document.getElementById('v-region').textContent = order.delivery_location;
-        document.getElementById('v-product').textContent = order.product_name;
-        document.getElementById('v-total').textContent = Number(order.total_amount).toLocaleString();
+        document.getElementById('v-region').textContent = order.delivery_location || 'N/A';
+        document.getElementById('v-product').textContent = order.product_name || 'N/A';
+        document.getElementById('v-total').textContent = Number(order.total_amount || 0).toLocaleString();
         
         const deliveryElem = document.getElementById('v-delivery-fee');
         if (deliveryElem) {
@@ -244,16 +244,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         orderModal.classList.remove('active');
     });
 
-    // 5. PRODUCTS MANAGEMENT (Grid Rendering & Addition)
+    // 5. PRODUCTS MANAGEMENT
     async function loadProducts() {
         const { data: products, error } = await supabaseClient
             .from('products')
             .select('*')
             .order('created_at', { ascending: false });
 
-        if (error) return console.error('Error:', error);
-        renderProducts(products);
-        renderInventory(products); // Also update inventory table
+        if (error) return console.error('Error loading products:', error);
+        renderProducts(products || []);
+        renderInventory(products || []);
     }
 
     async function loadInventory() {
@@ -269,6 +269,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!tbody) return;
 
         tbody.innerHTML = '';
+        if (!products || products.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:40px; color:#888;">No products in inventory yet. Click "+ Add New Product" to get started!</td></tr>`;
+            return;
+        }
+
         products.forEach(product => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -281,8 +286,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                            data-id="${escapeHTML(product.id)}">
                 </td>
                 <td>
-                    <span class="status-tag ${product.quantity_in_stock > 0 ? 'packed' : 'pending'}">
-                        ${product.quantity_in_stock > 0 ? 'ACTIVE' : 'OUT'}
+                    <span class="status-tag ${product.quantity_in_stock > 0 ? 'delivered' : 'pending'}">
+                        ${product.quantity_in_stock > 0 ? 'ACTIVE' : 'OUT OF STOCK'}
                     </span>
                 </td>
             `;
@@ -315,18 +320,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderProducts(products) {
         allProducts = products;
         const grid = document.getElementById('products-admin-grid');
+        if (!grid) return;
         grid.innerHTML = '';
+
+        if (!products || products.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #FFF; border-radius: 24px;">
+                    <h3 style="font-size: 1.4rem; font-weight:700; margin-bottom: 10px;">No Products Found</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Your product catalog is empty. Click below to add your first luxury fragrance.</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('open-add-product-modal').click()">+ Add First Product</button>
+                </div>
+            `;
+            return;
+        }
 
         products.forEach((product) => {
             const card = document.createElement('div');
             card.className = 'product-admin-card';
             card.innerHTML = `
                 <div class="product-admin-info">
-                    <img class="product-thumb" src="${escapeHTML(product.main_image)}">
+                    <img class="product-thumb" src="${escapeHTML(product.main_image || '../assets/images/hero_iris.jpg')}" alt="${escapeHTML(product.name)}">
                     <h3>${escapeHTML(product.name)}</h3>
                     <p class="product-admin-price">₦${Number(product.price).toLocaleString()}</p>
                     <div class="stock-status">
-                      <span class="stock-count">Stock: ${product.quantity_in_stock}</span>
+                      <span class="stock-count">Stock: ${product.quantity_in_stock || 0}</span>
                       ${product.is_featured ? '<span class="status-tag delivered">Featured</span>' : ''}
                     </div>
                 </div>
@@ -394,7 +411,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             img.crossOrigin = "Anonymous";
             img.onload = () => {
                 try {
-                    const TARGET_SIZE = 800; // Perfect standard size
+                    const TARGET_SIZE = 800;
                     const canvas = document.createElement("canvas");
                     canvas.width = TARGET_SIZE;
                     canvas.height = TARGET_SIZE;
@@ -420,26 +437,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     mainImgInput?.addEventListener('input', async () => {
         let url = mainImgInput.value.trim();
         if (!url) {
-            mainImgPreview.style.display = 'none';
-            mainImgStatus.textContent = "We'll automatically fetch, crop, and optimize it.";
+            if (mainImgPreview) mainImgPreview.style.display = 'none';
+            if (mainImgStatus) mainImgStatus.textContent = "We'll automatically fetch, crop, and optimize it.";
             return;
         }
         if (url.startsWith('data:image')) {
-            mainImgPreview.src = url; mainImgPreview.style.display = 'block';
-            mainImgStatus.innerHTML = '<span style="color:#27AE60">✓ Using Optimized Image</span>';
+            if (mainImgPreview) { mainImgPreview.src = url; mainImgPreview.style.display = 'block'; }
+            if (mainImgStatus) mainImgStatus.innerHTML = '<span style="color:#27AE60">✓ Using Optimized Image</span>';
             return;
         }
-        mainImgStatus.innerHTML = '<span style="color:var(--primary)">Optimizing...</span>';
+        if (mainImgStatus) mainImgStatus.innerHTML = '<span style="color:var(--primary)">Optimizing...</span>';
         const base64 = await optimizeImage(url);
         if (base64 !== url) {
             mainImgInput.value = base64;
-            mainImgPreview.src = base64;
-            mainImgStatus.innerHTML = '<span style="color:#27AE60">✓ Standardized to 800x800 WEBP</span>';
+            if (mainImgPreview) { mainImgPreview.src = base64; mainImgPreview.style.display = 'block'; }
+            if (mainImgStatus) mainImgStatus.innerHTML = '<span style="color:#27AE60">✓ Standardized to 800x800 WEBP</span>';
         } else {
-            mainImgPreview.src = url;
-            mainImgStatus.innerHTML = '<span style="color:#E74C3C">Kept original URL (CORS error)</span>';
+            if (mainImgPreview) { mainImgPreview.src = url; mainImgPreview.style.display = 'block'; }
+            if (mainImgStatus) mainImgStatus.innerHTML = '<span style="color:#E74C3C">Kept original URL link</span>';
         }
-        mainImgPreview.style.display = 'block';
     });
 
     // Modal Logic
@@ -448,26 +464,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closeModalBtn = document.querySelector('.close-modal');
 
     openModalBtn?.addEventListener('click', () => {
-        // Reset everything for NEW product
         document.getElementById('modal-title').textContent = 'Add New Product';
         addProductForm.reset();
         document.getElementById('p-id').value = '';
-        if (typeof mainImgPreview !== 'undefined' && mainImgPreview) {
+        if (mainImgPreview) {
             mainImgPreview.style.display = 'none';
             mainImgPreview.src = '';
-            if (mainImgStatus) mainImgStatus.textContent = "We'll automatically fetch, crop, and optimize it.";
         }
+        if (mainImgStatus) mainImgStatus.textContent = "We'll automatically fetch, crop, and optimize it.";
         addProductModal.classList.add('active');
     });
     closeModalBtn?.addEventListener('click', () => addProductModal.classList.remove('active'));
 
-    // Handle Product Form
+    // Handle Product Form Submit
     const addProductForm = document.getElementById('add-product-form');
     addProductForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = e.target.querySelector('button[type="submit"]');
         btn.disabled = true;
-        btn.textContent = 'Creating...';
+        btn.textContent = 'Saving...';
 
         const formData = new FormData(addProductForm);
         const productId = formData.get('id');
@@ -476,12 +491,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             name: formData.get('name'),
             price: Number(formData.get('price')),
             main_image: formData.get('main_image'),
-            other_images: formData.get('other_images').split(',').map(u => u.trim()).filter(u => u !== ""),
+            other_images: (formData.get('other_images') || '').split(',').map(u => u.trim()).filter(u => u !== ""),
             description: formData.get('description'),
-            gender: formData.get('gender'),
-            category: formData.get('category'),
-            sizes: formData.get('sizes'),
-            quantity_in_stock: Number(formData.get('quantity_in_stock')),
+            gender: formData.get('gender') || 'unisex',
+            category: formData.get('category') || 'EAU DE PARFUM',
+            sizes: formData.get('sizes') || '',
+            quantity_in_stock: Number(formData.get('quantity_in_stock') || 0),
             is_featured: formData.get('is_featured') === 'on'
         };
 
@@ -497,6 +512,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             addProductForm.reset();
             addProductModal.classList.remove('active');
+            loadProducts();
         }
     });
 
@@ -534,8 +550,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             .select('*')
             .order('name', { ascending: true });
 
-        if (error) return console.error('Error:', error);
-        renderLocations(locations);
+        if (error) return console.error('Error loading locations:', error);
+        renderLocations(locations || []);
     }
 
     function renderLocations(locations) {
@@ -543,12 +559,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!tbody) return;
         tbody.innerHTML = '';
 
+        if (!locations || locations.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#888;">No custom delivery locations configured.</td></tr>`;
+            return;
+        }
+
         locations.forEach(loc => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${escapeHTML(loc.name)}</td>
                 <td>₦${Number(loc.fee).toLocaleString()}</td>
-                <td><button class="btn btn-small delete-location" style="color:red;" data-id="${escapeHTML(loc.id)}">Delete</button></td>
+                <td><button class="btn btn-small delete-location text-danger" style="background:none; border:none; cursor:pointer;" data-id="${escapeHTML(loc.id)}">Delete</button></td>
             `;
             tbody.appendChild(tr);
         });
@@ -569,7 +590,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         if (errMsg) { errMsg.style.display = 'block'; errMsg.textContent = 'Deletion Blocked: ' + error.message; }
                         else alert('Error deleting: ' + error.message);
                     } else {
-                        if (typeof loadLocations === 'function') loadLocations();
+                        loadLocations();
                     }
                 }
             });
@@ -584,7 +605,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const name = prompt('Enter Location Name (e.g., Abuja):');
         if (!name) return;
         const fee = prompt('Enter Delivery Fee (₦):');
-        if (isNaN(fee)) {
+        if (isNaN(fee) || fee === null) {
             if (errMsg) { errMsg.style.display = 'block'; errMsg.textContent = 'Failed: Please enter a valid number for fee'; }
             else alert('Please enter a valid number for fee');
             return;
@@ -595,10 +616,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             .insert([{ name, fee: Number(fee) }]);
 
         if (error) {
-            if (errMsg) { errMsg.style.display = 'block'; errMsg.textContent = 'Database Permissions Issue: ' + error.message; }
+            if (errMsg) { errMsg.style.display = 'block'; errMsg.textContent = 'Database Issue: ' + error.message; }
             else alert('Error adding location: ' + error.message);
         } else {
-            if (typeof loadLocations === 'function') loadLocations();
+            loadLocations();
         }
     });
 
@@ -608,7 +629,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function fetchSettings() {
         const { data, error } = await supabaseClient.from('settings').select('*').single();
-        if (!error) storeSettings = data;
+        if (!error && data) storeSettings = data;
+        else storeSettings = { whatsapp_number: '+2348000000000', store_email: 'contact@maisonelixir.com', store_name: 'MAISON ÉLIXIR' };
     }
     fetchSettings();
 
@@ -623,8 +645,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             tab.classList.add('active');
             const activeTab = tab.getAttribute('data-tab');
 
-            // Show/Hide Rider Inputs
-            riderInputs.style.display = activeTab === 'update' ? 'grid' : 'none';
+            if (riderInputs) riderInputs.style.display = activeTab === 'update' ? 'grid' : 'none';
 
             updateTemplate(activeTab);
         });
@@ -632,7 +653,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     searchInput?.addEventListener('input', async (e) => {
         const id = e.target.value.trim();
-        if (id.length < 3) return; // Lowered to 3 to support custom order_ids like '1a3'
+        if (id.length < 3) return;
 
         const { data, error } = await supabaseClient
             .from('orders')
@@ -648,12 +669,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    document.getElementById('rider-name')?.addEventListener('input', () => {
-        updateTemplate('update');
-    });
-    document.getElementById('rider-phone')?.addEventListener('input', () => {
-        updateTemplate('update');
-    });
+    document.getElementById('rider-name')?.addEventListener('input', () => updateTemplate('update'));
+    document.getElementById('rider-phone')?.addEventListener('input', () => updateTemplate('update'));
 
     function updateTemplate(activeTab) {
         if (!currentMsgOrder || !storeSettings) return;
@@ -672,30 +689,34 @@ document.addEventListener('DOMContentLoaded', async () => {
             site_link: window.location.origin
         };
 
-        const riderName = document.getElementById('rider-name').value || '[Rider Name]';
-        const riderPhone = document.getElementById('rider-phone').value || '[Rider Phone]';
+        const riderName = document.getElementById('rider-name')?.value || '[Rider Name]';
+        const riderPhone = document.getElementById('rider-phone')?.value || '[Rider Phone]';
 
         let template = "";
         if (activeTab === 'confirmation') {
-            template = `Hello ${vars.name}! 👋 Your order #${vars.order_id} has been received. Items: ${vars.item_list}. Total Paid: ₦${vars.total}. We are prepping your fragrances now! 🧪`;
+            template = `Hello ${vars.name}! 👋 Your order #${vars.order_id} has been received. Fragrance: ${vars.item_list}. Total Paid: ₦${vars.total}. We are preparing your order for dispatch! ✨`;
         } else if (activeTab === 'update') {
-            template = `Hi! Your order #${vars.order_id} for ${vars.count}x ${vars.item_name} is on the way to ${vars.location}. Courier Details: Name: ${riderName}, Phone: ${riderPhone}. Contact: ${vars.biz_whatsapp} / ${vars.biz_email}.`;
+            template = `Hi ${vars.name}! Your order #${vars.order_id} (${vars.item_name}) is on the way to ${vars.location}. Rider Details: Name: ${riderName}, Phone: ${riderPhone}. Contact: ${vars.biz_whatsapp} / ${vars.biz_email}.`;
         } else if (activeTab === 'success') {
-            template = `Delivered! ✨ Hope you love your new fragrances, ${vars.name}. Tag us in your photos! Order more: ${vars.site_link}. Contact: ${vars.biz_whatsapp} / ${vars.biz_email}.`;
+            template = `Delivered! ✨ Hope you enjoy your new fragrance, ${vars.name}. Order more at: ${vars.site_link}. Contact: ${vars.biz_whatsapp} / ${vars.biz_email}.`;
         }
 
-        msgPreview.value = template;
-        document.getElementById('char-count').textContent = `${template.length} characters`;
+        if (msgPreview) {
+            msgPreview.value = template;
+            const charCount = document.getElementById('char-count');
+            if (charCount) charCount.textContent = `${template.length} characters`;
+        }
     }
 
     document.getElementById('open-whatsapp-btn')?.addEventListener('click', () => {
         if (!currentMsgOrder) return alert('Please search for an order first');
-        const phone = currentMsgOrder.customer_phone.replace(/[^\d+]/g, ''); // Clean the phone number
-        const text = encodeURIComponent(msgPreview.value);
+        const phone = (currentMsgOrder.customer_phone || '').replace(/[^\d+]/g, '');
+        const text = encodeURIComponent(msgPreview ? msgPreview.value : '');
         window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     });
 
     document.getElementById('copy-msg-btn')?.addEventListener('click', () => {
+        if (!msgPreview) return;
         msgPreview.select();
         document.execCommand('copy');
         alert('Message copied to clipboard!');

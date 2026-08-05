@@ -64,8 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
             .limit(3);
 
         const grid = document.querySelector('.product-grid');
-        if (!error && featuredProducts && grid) {
+        if (!error && grid) {
             grid.innerHTML = '';
+            if (!featuredProducts || featuredProducts.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--primary);">
+                        <p style="font-size: 1.1rem; opacity: 0.75; font-family: var(--font-serif); font-style: italic;">No featured fragrances listed yet. Add products from the Admin Portal to display them here.</p>
+                    </div>
+                `;
+                return;
+            }
             featuredProducts.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -88,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         e.stopPropagation();
                         return;
                     }
-                    window.location.href = 'shop.html';
+                    openProductModal(product);
                 });
                 grid.appendChild(card);
             });
@@ -107,6 +115,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const grid = document.querySelector('.products-grid');
         if (!error && grid) {
             grid.innerHTML = '';
+            if (!products || products.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 80px 20px; color: var(--primary);">
+                        <p style="font-size: 1.2rem; opacity: 0.75; font-family: var(--font-serif); font-style: italic;">Our catalog is currently empty. New fragrance arrivals will appear here once added from the Admin Portal.</p>
+                    </div>
+                `;
+                return;
+            }
             products.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';

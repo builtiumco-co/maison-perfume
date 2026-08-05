@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Maison Élixir</title>
+  <title>Admin Dashboard | MAISON ÉLIXIR</title>
   <link rel="stylesheet" href="css/main.css">
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <!-- Supabase JS Client -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,7 +17,7 @@
 
   <aside class="sidebar">
     <div class="sidebar-header">
-      <h1 class="logo">Maison Élixir</h1>
+      <h1 class="logo">MAISON ÉLIXIR</h1>
       <p class="admin-label">Admin Portal</p>
     </div>
     <nav class="sidebar-nav">
@@ -38,7 +38,7 @@
       </a>
     </nav>
     <div class="sidebar-footer">
-      <a href="/" class="nav-item">
+      <a href="../index.html" class="nav-item">
         <span class="icon">←</span> Back to Site
       </a>
       <a id="logout-btn" class="nav-item" style="color:#E74C3C; cursor:pointer;">
@@ -72,23 +72,7 @@
               </tr>
             </thead>
             <tbody id="orders-tbody">
-              <!-- Orders will be loaded here -->
-              <tr>
-                <td>#ORD-8921</td>
-                <td>John Doe</td>
-                <td>Believe Shadow (Size 42)</td>
-                <td>$120.00</td>
-                <td><span class="status-tag pending">Pending</span></td>
-                <td><button class="btn btn-small">View</button></td>
-              </tr>
-              <tr>
-                <td>#ORD-8922</td>
-                <td>Jane Smith</td>
-                <td>Onyx Core (Size 38)</td>
-                <td>$145.00</td>
-                <td><span class="status-tag packed">Packed</span></td>
-                <td><button class="btn btn-small">View</button></td>
-              </tr>
+              <!-- Orders loaded dynamically from Supabase -->
             </tbody>
           </table>
         </div>
@@ -144,11 +128,11 @@
           <div class="form-row">
             <div class="form-group flex-2">
               <label for="p-name">Product Name</label>
-              <input type="text" id="p-name" name="name" required placeholder="Believe Shadow">
+              <input type="text" id="p-name" name="name" required placeholder="Wild Black">
             </div>
             <div class="form-group flex-1">
               <label for="p-price">Price (₦)</label>
-              <input type="number" id="p-price" name="price" required placeholder="120000">
+              <input type="number" id="p-price" name="price" required placeholder="75000">
             </div>
           </div>
 
@@ -175,33 +159,32 @@
           <div class="form-group">
             <label for="p-description">Description</label>
             <textarea id="p-description" name="description"
-              placeholder="Experience the pinnacle of luxury..."></textarea>
+              placeholder="Experience the pinnacle of artisanal luxury..."></textarea>
           </div>
 
           <div class="form-row">
             <div class="form-group" style="flex:1">
               <label for="p-gender">Collection / Gender</label>
               <select id="p-gender" name="gender">
+                <option value="unisex">Unisex</option>
                 <option value="men">Men's</option>
                 <option value="women">Women's</option>
-                <option value="unisex">Unisex</option>
               </select>
             </div>
             <div class="form-group" style="flex:1">
-              <label for="p-category">Category</label>
-              <input type="text" id="p-category" name="category" placeholder="Eau de Parfum">
+              <label for="p-category">Category Concentration</label>
+              <input type="text" id="p-category" name="category" placeholder="EAU DE PARFUM">
             </div>
             <div class="form-group" style="flex:1">
               <label for="p-stock">Initial Stock</label>
-              <input type="number" id="p-stock" name="quantity_in_stock" value="0">
+              <input type="number" id="p-stock" name="quantity_in_stock" value="10">
             </div>
           </div>
 
           <div class="form-group">
-            <label for="p-sizes">Available Sizes (Comma separated liquid volumes)</label>
-            <input type="text" id="p-sizes" name="sizes" placeholder="e.g. 50ml, 100ml, 150ml">
-            <small class="text-small-gray" style="font-weight:600; display:block; margin-top:8px;">Leave blank if the
-              item doesn't require sizing.</small>
+            <label for="p-sizes">Available Bottle Sizes (Comma separated)</label>
+            <input type="text" id="p-sizes" name="sizes" placeholder="e.g. 50ml, 100ml">
+            <small class="text-small-gray" style="font-weight:600; display:block; margin-top:8px;">Leave blank if default size applies.</small>
           </div>
 
           <div class="form-group checkbox-group">
@@ -225,7 +208,7 @@
         <form id="settings-form" class="admin-form">
           <div class="form-group">
             <label for="store_name">Store Name</label>
-            <input type="text" id="store_name" name="store_name" placeholder="Maison Élixir" autocomplete="organization"
+            <input type="text" id="store_name" name="store_name" placeholder="MAISON ÉLIXIR" autocomplete="organization"
               required>
           </div>
           <div class="form-group">
@@ -235,7 +218,7 @@
           </div>
           <div class="form-group">
             <label for="delivery_fee">Default Delivery Fee (₦)</label>
-            <input type="text" id="delivery_fee" name="delivery_fee" placeholder="3000">
+            <input type="text" id="delivery_fee" name="delivery_fee" placeholder="5000">
           </div>
           <div class="form-group">
             <label for="whatsapp_number">WhatsApp Business Number</label>
@@ -266,7 +249,7 @@
               </tr>
             </thead>
             <tbody id="locations-tbody">
-              <!-- Locations will be loaded here -->
+              <!-- Locations loaded dynamically -->
             </tbody>
           </table>
         </div>
@@ -347,7 +330,7 @@
         <div class="view-detail-card">
           <h4>Delivery Address</h4>
           <p id="v-address"></p>
-          <p><strong>City:</strong> <span id="v-region"></span></p>
+          <p><strong>City/Location:</strong> <span id="v-region"></span></p>
         </div>
         <div class="view-detail-card">
           <p><strong>Product:</strong> <span id="v-product"></span></p>
