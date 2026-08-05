@@ -1274,11 +1274,9 @@ body {
 }
 
 .desktop-nav {
+  justify-self: center;
   display: flex;
   gap: 35px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 .desktop-nav a {
   font-family: 'Outfit', sans-serif;
