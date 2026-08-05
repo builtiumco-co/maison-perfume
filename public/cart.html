@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | ANTIGRAVITY</title>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <style>
+    :root {
+      --checkout-bg: #ffffff;
+      --accent: #27AE60;
+      /* The green from the screenshot */
+      --text: #333333;
+      --light: #f7f7f7;
+    }
+
+    body {
+      background-color: var(--checkout-bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .checkout-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .checkout-header {
+      margin-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .checkout-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .step-indicator {
+      display: flex;
+      gap: 15px;
+      font-size: 0.85rem;
+      color: #999;
+      margin-bottom: 30px;
+    }
+
+    .step-indicator span.active {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .step-indicator .check {
+      color: var(--accent);
+    }
+
+    /* Form Styles */
+    .form-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row>* {
+      flex: 1;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .phone-input {
+      display: flex;
+      gap: 10px;
+    }
+
+    .phone-input select {
+      flex: 0 0 100px;
+    }
+
+    /* Summary Styles */
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .summary-total {
+      border-top: 1px dashed #eee;
+      padding-top: 20px;
+      margin-top: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .item-list {
+      margin-bottom: 30px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+
+    .checkout-btn:hover {
+      background: #219150;
+    }
+
+    .back-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 15px;
+      color: #888;
+      cursor: pointer;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .gift-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      color: #555;
+    }
+
+    .cart-bag-icon {
+      background: var(--accent);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 600px) {
+      .checkout-container {
+        padding: 30px 20px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .checkout-title {
+        font-size: 1.3rem;
+      }
+
+      .step-indicator {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .step-indicator span {
+        font-size: 0.75rem;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 12px;
+        font-size: 0.95rem;
+      }
+
+      .checkout-btn {
+        padding: 16px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="checkout-container">
+    <div class="checkout-header">
+      <h1 class="checkout-title" id="page-title">Contact Details</h1>
+      <div class="cart-bag-icon">
+        <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+        </svg>
+        <span id="bag-count">0</span>
+      </div>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="step-indicator">
+      <span id="step-1-label" class="active">Contact</span>
+      <span id="step-2-label">Shipping</span>
+      <span id="step-3-label">Review</span>
+    </div>
+
+    <!-- STEP 1: CONTACT -->
+    <section id="step-1" class="form-section active">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First name</label>
+          <input type="text" id="firstName" placeholder="First name" autocomplete="given-name" required>
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last name</label>
+          <input type="text" id="lastName" placeholder="Last name" autocomplete="family-name" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Enter email address</label>
+        <input type="email" id="email" placeholder="you@mail.com" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Your phone number</label>
+        <div class="phone-input">
+          <select id="countryCode" autocomplete="tel-country-code">
+            <option value="+234">+234</option>
+          </select>
+          <input type="tel" id="phone" placeholder="Phone number" autocomplete="tel" required>
+        </div>
+      </div>
+      <div
+        style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 30px; background: #F9F9F9; padding: 15px; border-radius: 12px;">
+        <input type="checkbox" id="isWhatsApp" style="width: auto; margin-top: 4px;">
+        <div>
+          <label for="isWhatsApp" style="margin-bottom: 4px; display: block; font-weight: 700;">Is this your WhatsApp
+            number?</label>
+          <span style="font-size: 0.8rem; color: #666;">We’ll use this for order confirmation and delivery
+            updates.</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="goToStep(2)">Review and pay</button>
+      <button class="back-btn" onclick="window.location.href='shop.html'"
+        style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        Back to shop
+      </button>
+    </section>
+
+    <!-- STEP 2: SHIPPING -->
+    <section id="step-2" class="form-section">
+      <div class="form-group">
+        <label for="address">Delivery address</label>
+        <input type="text" id="address" placeholder="Full address" autocomplete="shipping street-address" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" placeholder="City" autocomplete="shipping address-level2" required>
+        </div>
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" placeholder="State" autocomplete="shipping address-level1" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <select id="country" autocomplete="shipping country">
+          <option value="Nigeria">Nigeria</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Delivery note</label>
+        <textarea id="note" placeholder="Optional"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Shipping City</label>
+        <select id="region" onchange="updateTotal()">
+          <option value="0">Select a city</option>
+          <!-- Cities loaded from Supabase -->
+        </select>
+      </div>
+      <button class="checkout-btn" onclick="goToStep(3)">Continue to pay</button>
+      <button class="back-btn" onclick="goToStep(1)">Back</button>
+    </section>
+
+    <!-- STEP 3: REVIEW & ORDER SUMMARY -->
+    <section id="step-3" class="form-section">
+      <div id="customer-preview" style="margin-bottom: 30px; font-size: 0.95rem; line-height: 1.6;">
+        <!-- Filled via JS -->
+      </div>
+
+      <div class="item-list" id="review-items">
+        <!-- Filled via JS -->
+      </div>
+
+      <div class="summary">
+        <div class="summary-item">
+          <span>Subtotal</span>
+          <span id="review-subtotal">₦0</span>
+        </div>
+        <div class="summary-item">
+          <span>Shipping</span>
+          <span id="review-shipping">₦0</span>
+        </div>
+        <div class="summary-total summary-item">
+          <span>Total</span>
+          <span id="review-total">₦0</span>
+        </div>
+      </div>
+
+      <button class="checkout-btn" id="finish-btn" onclick="payWithPaystack()">Pay ₦0</button>
+      <button class="back-btn" onclick="goToStep(2)">Back</button>
+    </section>
+
+    <!-- STEP 4: THANK YOU -->
+    <section id="step-4" class="form-section" style="text-align: center; padding: 40px 10px;">
+      <div style="width: 80px; height: 80px; background: #e8f5e9; color: #27ae60; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px auto;">
+        ✓
+      </div>
+      <h2 style="font-family: 'Outfit'; font-size: 2.5rem; margin-bottom: 15px;">Payment Successful!</h2>
+      <p id="ty-main-text" style="color: #666; font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6;">Thank you for your purchase. We are preparing your order.</p>
+      
+      <div style="background: #f9f9f9; padding: 25px; border-radius: 15px; margin-bottom: 40px; text-align: left;">
+        <p style="margin-bottom: 5px; font-weight: 600; color: #555;">Payment Reference</p>
+        <p id="thank-you-ref" style="font-family: monospace; font-size: 1.1rem; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px;">...</p>
+
+        <p style="margin-bottom: 5px; font-weight: 600; color: #555;">Order ID(s)</p>
+        <p id="thank-you-order-id" style="font-family: monospace; font-size: 1.1rem; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; color: #27AE60; font-weight: bold;">...</p>
+      </div>
+
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <button class="checkout-btn" style="flex: 1; margin: 0; min-width: 200px; background: black;" onclick="window.location.href='shop.html'">Continue Shopping</button>
+        <button class="checkout-btn" style="flex: 1; margin: 0; background: #25D366; min-width: 200px;" id="wa-support-btn">WhatsApp Support</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/main.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://myrqlqstzakmnxfenlzg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15cnFscXN0emFrbW54ZmVubHpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NzczMTAsImV4cCI6MjEwMTQ1MzMxMH0.OovcIHrIY30kAVs2CU1DI6nhU6tpVpD0N4QHTSAY2ss';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let currentStep = 1;
+    let cart = JSON.parse(localStorage.getItem('antigravity_cart') || '[]');
+    let shippingFee = 0;
+
+    function initCheckout() {
+      renderBagCount();
+      if (cart.length === 0) {
+        alert('Your cart is empty. Redirecting to shop...');
+        window.location.href = 'shop.html';
+      }
+    }
+
+    function renderBagCount() {
+      document.getElementById('bag-count').textContent = cart.length;
+    }
+
+    function validateStep(current) {
+      if (current === 1) {
+        const fname = document.getElementById('firstName').value.trim();
+        const lname = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim().replace(/[-.\s]/g, '');
+
+        if (!fname) { alert('Please enter your first name. 🖤'); return false; }
+        if (!lname) { alert('Please enter your last name. 🖤'); return false; }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) { alert('Please enter a valid email address. 🖤'); return false; }
+        
+        const phoneRegex = /^[0-9]{10,11}$/;
+        if (!phone || !phoneRegex.test(phone)) { alert('Please enter a valid 10 or 11-digit phone number. 🖤'); return false; }
+      }
+      
+      if (current === 2) {
+        const address = document.getElementById('address').value.trim();
+        const city = document.getElementById('city').value.trim();
+        const state = document.getElementById('state').value.trim();
+        const region = document.getElementById('region').value;
+
+        if (!address) { alert('Please enter your delivery address. 🖤'); return false; }
+        if (!city) { alert('Please enter your city. 🖤'); return false; }
+        if (!state) { alert('Please enter your state. 🖤'); return false; }
+        if (region === "0") { alert('Please select a shipping city for delivery fee calculation. 🖤'); return false; }
+      }
+      
+      return true;
+    }
+
+    function goToStep(step) {
+      // Validate steps sequentially if moving forward
+      if (step > currentStep) {
+        for (let s = currentStep; s < step; s++) {
+          if (!validateStep(s)) return;
+        }
+      }
+
+      document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step-${step}`).classList.add('active');
+
+      // Update Indicator
+      document.querySelectorAll('.step-indicator span').forEach((s, idx) => {
+        if (idx + 1 < step) s.innerHTML = '<span class="check">✓</span> Done';
+        else if (idx + 1 === step) s.className = 'active';
+        else s.className = '';
+      });
+
+      // Update Header Title
+      if (step === 4) {
+         document.getElementById('page-title').textContent = "Order Confirmed";
+         document.querySelector('.step-indicator').style.display = 'none';
+         document.querySelector('.cart-bag-icon').style.display = 'none';
+      } else {
+         const titles = ["Contact Details", "Delivery Address", "Order details"];
+         document.getElementById('page-title').textContent = titles[step - 1];
+      }
+
+      if (step === 3) populateReview();
+      currentStep = step;
+      window.scrollTo(0, 0);
+    }
+
+    let locations = [];
+
+    function setupRealtime() {
+      supabaseClient
+        .channel('public:locations')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'locations' }, loadLocations)
+        .subscribe();
+    }
+
+    async function loadLocations() {
+      const { data, error } = await supabaseClient.from('locations').select('*').order('name');
+      if (!error && data) {
+        locations = data;
+        const select = document.getElementById('region');
+        const currentValue = select.value;
+
+        select.innerHTML = '<option value="0">Select a city</option>';
+        data.forEach(loc => {
+          const option = document.createElement('option');
+          option.value = loc.fee;
+          option.textContent = `${loc.name} (₦${Number(loc.fee).toLocaleString()})`;
+          option.dataset.name = loc.name;
+          select.appendChild(option);
+        });
+
+        // Maintain selection if possible
+        if (currentValue !== "0") select.value = currentValue;
+        updateTotal();
+      }
+    }
+
+    function updateTotal() {
+      shippingFee = parseInt(document.getElementById('region').value) || 0;
+      if (currentStep === 3) populateReview();
+    }
+
+    function populateReview() {
+      const fname = document.getElementById('firstName').value;
+      const lname = document.getElementById('lastName').value;
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+
+      document.getElementById('customer-preview').innerHTML = `
+            <strong>${fname} ${lname}</strong><br>
+            ${document.getElementById('email').value}<br>
+            ${document.getElementById('countryCode').value} ${document.getElementById('phone').value}<br><br>
+            <strong>Delivery Address</strong><br>
+            ${address}, ${city}, ${document.getElementById('state').value}, Nigeria
+        `;
+
+      const reviewList = document.getElementById('review-items');
+      reviewList.innerHTML = '';
+      let subtotal = 0;
+
+      cart.forEach(item => {
+        const row = document.createElement('div');
+        row.className = 'summary-item';
+        row.innerHTML = `
+                <span>${item.name} x1</span>
+                <span>₦${Number(item.price).toLocaleString()}</span>
+            `;
+        reviewList.appendChild(row);
+        subtotal += item.price;
+      });
+
+      const total = subtotal + shippingFee;
+      document.getElementById('review-subtotal').textContent = `₦${subtotal.toLocaleString()}`;
+      document.getElementById('review-shipping').textContent = `₦${shippingFee.toLocaleString()}`;
+      document.getElementById('review-total').textContent = `₦${total.toLocaleString()}`;
+      document.getElementById('finish-btn').textContent = `Pay ₦${total.toLocaleString()}`;
+    }
+
+    async function payWithPaystack() {
+      const email = document.getElementById('email').value;
+      const fname = document.getElementById('firstName').value;
+      const lname = document.getElementById('lastName').value;
+
+      if (!email || !fname) {
+        alert('Please complete step 1 with your name and email');
+        goToStep(1);
+        return;
+      }
+
+      const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+      const total = subtotal + shippingFee;
+
+      const handler = PaystackPop.setup({
+        key: 'pk_live_1c0e761a96b9bcffd70e6e072271dd5560be3723', // REPLACE THIS WITH YOUR PUBLIC KEY (pk_live_... or pk_test_...)
+        email: email,
+        amount: Math.round(total * 100), // Paystack requires a strict integer in Kobo
+        currency: 'NGN',
+        reference: 'AGY-' + Math.floor((Math.random() * 1000000000) + 1),
+        metadata: {
+          custom_fields: [
+            {
+              display_name: "Customer Name",
+              variable_name: "customer_name",
+              value: `${fname} ${lname}`
+            }
+          ]
+        },
+        callback: function (response) {
+          // Payment successful!
+          saveOrderToSupabase(response.reference);
+        },
+        onClose: function () {
+          alert('Transaction was not completed.');
+        }
+      });
+      handler.openIframe();
+    }
+
+    async function saveOrderToSupabase(reference) {
+      const btn = document.getElementById('finish-btn');
+      btn.disabled = true;
+      btn.textContent = 'Saving Order...';
+
+      const fname = document.getElementById('firstName').value;
+      const lname = document.getElementById('lastName').value;
+      const email = document.getElementById('email').value;
+      const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+      const total = subtotal + shippingFee;
+
+      const citySelect = document.getElementById('region');
+      const selectedOption = citySelect.options[citySelect.selectedIndex];
+      const locationName = selectedOption.dataset.name || 'Unknown';
+      const isWhatsApp = document.getElementById('isWhatsApp').checked;
+
+      const address = document.getElementById('address').value;
+      const city = document.getElementById('city').value;
+      const state = document.getElementById('state').value;
+
+      // Generate Custom Order ID Elements
+      const date = new Date();
+      const month = date.getMonth() + 1; // 1-12
+      const day = date.getDate();
+      const year = date.getFullYear().toString().slice(-2);
+      
+      // Secure order counting via database RPC function
+      let orderGroupNum = 1;
+      const { data: count, error: countError } = await supabaseClient.rpc('get_today_order_count');
+      if (!countError && count !== null) {
+        orderGroupNum = Number(count) + 1;
+      } else {
+        console.error('Error fetching order count via RPC, using secure random fallback:', countError);
+        orderGroupNum = Math.floor(Math.random() * 900) + 100;
+      }
+      const alphabet = "abcdefghijklmnopqrstuvwxyz";
+      const generatedOrderIds = [];
+
+      const ordersToInsert = cart.map((item, index) => {
+        const sequenceLetter = alphabet[index % 26]; // a, b, c...
+        const customOrderId = `${orderGroupNum}${sequenceLetter}${month}-${day}-${year}`;
+        generatedOrderIds.push(customOrderId);
+        
+        return {
+          customer_name: `${fname} ${lname}`,
+          customer_email: email,
+          customer_phone: `${document.getElementById('countryCode').value}${document.getElementById('phone').value}`,
+          customer_address: `${address}, ${city}, ${state}, Nigeria`,
+          product_name: item.name,
+          total_amount: item.price,
+          delivery_fee: shippingFee,
+          delivery_location: locationName,
+          is_whatsapp: isWhatsApp,
+          is_paid: true,
+          order_status: 'pending',
+          payment_reference: reference, // Storing the Paystack ref for safety
+          order_id: customOrderId // NEW: Custom sequence Order ID
+        };
+      });
+
+      const { error } = await supabaseClient.from('orders').insert(ordersToInsert);
+
+      localStorage.removeItem('antigravity_cart');
+      cart = [];
+      document.getElementById('thank-you-ref').textContent = reference;
+      document.getElementById('thank-you-order-id').textContent = generatedOrderIds.join(', ');
+      document.getElementById('bag-count').textContent = '0';
+
+      if (error) {
+        console.error('Supabase Error:', error);
+        document.getElementById('ty-main-text').innerHTML = `Your payment was successful, but we ran into a slight issue saving your order details to our system.<br><br><strong style="color:#E74C3C">Please screenshot this page and send it to our WhatsApp support to confirm your items.</strong>`;
+      } else {
+        // STOCK DEDUCTION LOGIC
+        for (const item of ordersToInsert) {
+          try {
+            // 1. Fetch current stock
+            const { data: product } = await supabaseClient
+              .from('products')
+              .select('quantity_in_stock')
+              .eq('name', item.product_name)
+              .single();
+
+            if (product) {
+              // 2. Decrement stock (min 0)
+              const newStock = Math.max(0, product.quantity_in_stock - 1);
+              await supabaseClient
+                .from('products')
+                .update({ quantity_in_stock: newStock })
+                .eq('name', item.product_name);
+            }
+          } catch (err) {
+            console.error('Stock Update Error:', err);
+          }
+        }
+      }
+
+      let waNum = "+2348123456789"; // Default
+      try {
+        const { data: settings } = await supabaseClient.from('settings').select('whatsapp_number').single();
+        if (settings && settings.whatsapp_number) waNum = settings.whatsapp_number;
+      } catch (e) {}
+
+      document.getElementById('wa-support-btn').onclick = () => {
+         const cleanNum = waNum.replace(/[^\d+]/g, '');
+         window.open(`https://wa.me/${cleanNum}?text=Hello, I just placed an order. My reference is ${reference}`, '_blank');
+      };
+
+      goToStep(4);
+    }
+
+    window.onload = () => {
+      initCheckout();
+      loadLocations();
+      setupRealtime();
+    };
+  </script>
+</body>
+
+</html>

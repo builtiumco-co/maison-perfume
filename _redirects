@@ -1,0 +1,5 @@
+/public/* /:splat 301
+/admin/* /admin/:splat 200
+/admin /admin/index.html 200
+/ /public/index.html 200
+/* /public/:splat 200

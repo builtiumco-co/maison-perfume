@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOP | ANTIGRAVITY</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* Shop Specific Styles */
+    .shop-header {
+      padding: 120px 0 60px 0;
+      text-align: left;
+    }
+
+    .shop-title {
+      font-family: 'Outfit';
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .shop-filters {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 80px;
+    }
+
+    .filter-btn {
+      background: none;
+      border: none;
+      font-family: 'Outfit';
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--primary);
+      opacity: 0.4;
+      cursor: pointer;
+      padding: 10px 0;
+      border-bottom: 2px solid transparent;
+      transition: var(--transition-smooth);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      opacity: 1;
+      border-bottom-color: var(--primary);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 60px 40px;
+      padding-bottom: 120px;
+    }
+
+    .product-card {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .product-img-wrapper {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background-color: var(--bg-hero);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 25px;
+      transition: var(--transition-smooth);
+    }
+
+    .product-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 40px;
+      transition: var(--transition-smooth);
+    }
+
+    .product-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .product-name {
+      font-family: 'Outfit';
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .product-category {
+      display: block;
+      font-size: 0.75rem;
+      opacity: 0.4;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .product-price {
+      font-family: 'Outfit';
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .product-card:hover .product-img-wrapper {
+      transform: translateY(-10px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+    }
+
+    .product-card:hover .product-img-wrapper img {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 1200px) {
+      .products-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .products-grid { grid-template-columns: 1fr; }
+      .shop-title { font-size: 2.5rem; }
+    }
+
+    /* Product Modal Styling */
+    .product-details-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(15px);
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .product-details-modal.active { display: flex; }
+
+    @keyframes modalFadeIn {
+        from { opacity: 0; transform: scale(1.05); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      width: 90%;
+      max-width: 1200px;
+      height: 85vh;
+      background: white;
+      padding: 50px;
+      border-radius: 30px;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: none;
+      border: none;
+      font-size: 2.5rem;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0.2;
+      transition: 0.3s;
+    }
+
+    .close-modal-btn:hover { opacity: 1; transform: rotate(90deg); }
+
+    .modal-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      height: 100%;
+      min-height: 0; /* Fix for flex child overflow */
+    }
+
+    .main-modal-img {
+      width: 100%;
+      height: 70%;
+      object-fit: contain;
+      border-radius: 15px;
+      background: #f9f9f9;
+      padding: 30px;
+      transition: opacity 0.4s ease;
+    }
+
+    .thumbnail-row {
+      display: flex;
+      gap: 12px;
+      height: 100px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scrollbar-width: thin;
+      -ms-overflow-style: none;
+    }
+
+    .thumbnail-row::-webkit-scrollbar { height: 3px; }
+    .thumbnail-row::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+    .thumb-img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0.4;
+      transition: 0.3s;
+      border: 2px solid transparent;
+      background: #f9f9f9;
+      flex-shrink: 0;
+    }
+
+    .thumb-img:hover, .thumb-img.active {
+      opacity: 1;
+      border-color: black;
+      transform: translateY(-2px);
+    }
+
+    .modal-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 10px;
+    }
+
+    .modal-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: #999;
+      margin-bottom: 12px;
+    }
+
+    .modal-name {
+      font-size: 3rem;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .modal-price {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: black;
+      margin-bottom: 30px;
+      font-family: 'Outfit';
+    }
+
+    .modal-description {
+      font-size: 1rem;
+      color: #777;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 450px;
+    }
+
+    .add-cart-btn {
+      width: 100%;
+      padding: 22px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .add-cart-btn:hover {
+      background: #111;
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 992px) {
+        .modal-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: none;
+            height: 100vh;
+            margin: 0;
+            padding: 30px 20px;
+            border-radius: 0;
+            overflow-y: auto; /* Enable vertical scrolling */
+            -webkit-overflow-scrolling: touch;
+            gap: 25px;
+            position: relative;
+        }
+        
+        .modal-gallery { 
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-modal-img { 
+            height: 300px; 
+            margin-bottom: 0; 
+            padding: 20px; 
+            background: #f7f7f7;
+            width: 100%;
+        }
+
+        .thumbnail-row { 
+            height: 70px;
+            margin-bottom: 10px;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .thumb-img { 
+            width: 60px; 
+            height: 60px; 
+            flex-shrink: 0;
+        }
+
+        .modal-info { 
+            padding: 0 0 40px 0; /* Add bottom padding for the button */
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .modal-name { 
+            font-size: 2.2rem; 
+            margin-bottom: 5px;
+            line-height: 1.1;
+        }
+        
+        .modal-price {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-description {
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            max-width: none;
+        }
+
+        .add-cart-btn {
+            padding: 18px;
+            margin-top: 10px;
+            flex-shrink: 0;
+            position: sticky;
+            bottom: 0;
+            z-index: 5;
+            box-shadow: 0 -10px 30px rgba(255,255,255,0.9);
+        }
+
+        .close-modal-btn {
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            opacity: 1;
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .modal-layout { padding: 20px; border-radius: 20px; }
+        .main-modal-img { height: 280px; }
+        .modal-name { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <div class="logo"><a href="index.html">ANTIGRAVITY</a></div>
+      <div class="header-actions">
+        <nav class="nav">
+          <a href="index.html" class="nav-link">HOME</a>
+          <a href="shop.html" class="nav-link active">SHOP</a>
+          <a href="about.html" class="nav-link">ABOUT US</a>
+          <a href="contact.html" class="nav-link">CONTACT</a>
+        </nav>
+        <a href="cart.html" class="cart-trigger">
+          <svg class="cart-icon" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="shop-header reveal">
+      <a href="index.html" style="text-decoration: none; color: #999; font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+        <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        BACK TO HOME
+      </a>
+      <h1 class="shop-title">OUR COLLECTION</h1>
+      <div class="shop-filters">
+        <button class="filter-btn active">ALL</button>
+        <button class="filter-btn">MEN'S</button>
+        <button class="filter-btn">WOMEN'S</button>
+        <button class="filter-btn">UNISEX</button>
+      </div>
+    </div>
+
+    <div class="products-grid reveal">
+      <!-- Products will be loaded here dynamically -->
+    </div>
+  </main>
+
+  <!-- Product Details Modal -->
+  <div id="product-details-modal" class="product-details-modal">
+    <div class="modal-layout">
+      <button class="close-modal-btn" id="close-details-modal">&times;</button>
+      
+      <div class="modal-gallery">
+        <img src="" alt="" id="main-product-img" class="main-modal-img">
+        <div class="thumbnail-row" id="thumbnail-row">
+            <!-- Thumbnails will be injected here -->
+        </div>
+      </div>
+
+      <div class="modal-info">
+        <div>
+            <div class="modal-category" id="modal-category">Category</div>
+            <h2 class="modal-name" id="modal-name">Product Name</h2>
+            <div class="modal-price" id="modal-price">₦0</div>
+            <p class="modal-description" id="modal-description">...</p>
+        </div>
+
+        <!-- NEW: Sizes Container -->
+        <div id="modal-size-container" style="margin-bottom: 25px; display: none;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: #999; margin-bottom: 12px; text-transform: uppercase;">Select Size</div>
+            <div id="modal-size-grid" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+        </div>
+
+        <button class="add-cart-btn">
+            <span>ADD TO CART</span>
+            <span id="btn-price-display">₦0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS Client (Required for main.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

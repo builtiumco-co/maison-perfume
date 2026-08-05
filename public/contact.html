@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONTACT US | ANTIGRAVITY</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .contact-section {
+            padding: 180px 0 120px 0;
+            background: var(--bg-hero);
+            min-height: 100vh;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 100px;
+            align-items: flex-start;
+        }
+        .contact-info h1 {
+            font-family: 'Outfit';
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            line-height: 1.1;
+        }
+        .contact-info p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 50px;
+            line-height: 1.6;
+        }
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .method-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+        .method-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        .method-value {
+            font-family: 'Outfit';
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .contact-form {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.05);
+        }
+        .contact-form h2 {
+            font-family: 'Outfit';
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #EEE;
+            border-radius: 12px;
+            font-family: 'Inter';
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: black;
+            box-shadow: 0 0 0 4px rgba(0,0,0,0.05);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 900px) {
+            .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+            .contact-info h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container reveal-visible">
+      <div class="logo"><a href="index.html">ANTIGRAVITY</a></div>
+      <div class="header-actions">
+        <nav class="nav">
+          <a href="index.html" class="nav-link">HOME</a>
+          <a href="shop.html" class="nav-link">SHOP</a>
+          <a href="about.html" class="nav-link">ABOUT US</a>
+          <a href="contact.html" class="nav-link active">CONTACT</a>
+        </nav>
+        <a href="cart.html" class="cart-trigger">
+          <svg class="cart-icon" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="contact-section">
+    <div class="container reveal">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h1>LET’S<br>KEEP IN TOUCH</h1>
+                <p>Have a question about sizing, materials, or your order? Reach out to us through any of these channels.</p>
+                
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="method-icon">📍</div>
+                        <div>
+                            <div class="method-title">Location</div>
+                            <div class="method-value">Lekki Phase 1, Lagos, Nigeria</div>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="method-icon">💬</div>
+                        <div>
+                            <div class="method-title">WhatsApp Support</div>
+                            <div class="method-value">+234 800 000 0000</div>
+                        </div>
+                    </div>
+                    <div class="contact-method">
+                        <div class="method-icon">✉️</div>
+                        <div>
+                            <div class="method-title">Email Us</div>
+                            <div class="method-value">contact@antigravity.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Direct Message</h2>
+                <form id="contact-form" name="contact" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="contact" />
+                    <div class="form-group">
+                        <label for="c-name">Your Name</label>
+                        <input type="text" id="c-name" name="name" placeholder="e.g. Chioma Okafor" autocomplete="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="c-email">Your Email</label>
+                        <input type="email" id="c-email" name="email" placeholder="you@email.com" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="c-message">Message</label>
+                        <textarea id="c-message" name="message" placeholder="How can we help you?" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">SEND MESSAGE</button>
+                    <p style="font-size: 0.75rem; color: #999; margin-top: 15px; text-align: center;">Our typical response time is under 2 hours.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- Supabase JS Client (Required for main.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

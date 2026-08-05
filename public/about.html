@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABOUT US | ANTIGRAVITY</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .about-hero {
+            padding: 180px 0 100px 0;
+            background: var(--bg-hero);
+            text-align: center;
+        }
+
+        .about-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .about-subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .story-section {
+            padding: 120px 0;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .story-content h2 {
+            font-family: 'Outfit';
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .story-image {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 100px;
+        }
+
+        .value-card {
+            background: white;
+            padding: 50px;
+            border-radius: 24px;
+            border: 1px solid #F1F1F1;
+            transition: 0.4s;
+        }
+
+        .value-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .value-title {
+            font-family: 'Outfit';
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .value-text {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            .story-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-title {
+                font-size: 3.5rem;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header-container reveal-visible">
+            <div class="logo"><a href="index.html">ANTIGRAVITY</a></div>
+            <div class="header-actions">
+                <nav class="nav">
+                    <a href="index.html" class="nav-link">HOME</a>
+                    <a href="shop.html" class="nav-link">SHOP</a>
+                    <a href="about.html" class="nav-link active">ABOUT US</a>
+                    <a href="contact.html" class="nav-link">CONTACT</a>
+                </nav>
+                <a href="cart.html" class="cart-trigger">
+                    <svg class="cart-icon" viewBox="0 0 24 24">
+                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+                    </svg>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="about-hero">
+        <div class="container reveal">
+            <h1 class="about-title">CRAFTED TO DEFY<br>GRAVITY</h1>
+            <p class="about-subtitle">Experience the pinnacle of luxury fragrances, hand-blended and aged to perfection in Lagos.</p>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="container">
+            <div class="story-grid reveal">
+                <div class="story-content">
+                    <h2>Our Story</h2>
+                    <p>Antigravity was born from a singular vision: to craft luxury fragrances that capture the bold, dynamic essence of Lagos while utilizing the highest standards of international high-end perfumery.</p>
+                    <p>Every bottle is a testament to our slow maturation philosophy. We don't rush. We don't mass-produce. We source raw, organic materials—precious oud wood, rare damask roses, and sweet vanilla—and let them steep in organic oils over months.</p>
+                    <a href="shop.html" class="shop-btn"
+                        style="padding: 18px 40px; text-decoration:none; display:inline-block; margin-top:20px;">Shop
+                        The Collection</a>
+                </div>
+                <div class="story-image-wrap">
+                    <img src="assets/images/about_studio.jpg" alt="Artisan at work">
+                </div>
+            </div>
+
+            <div class="values-grid reveal">
+                <div class="value-card">
+                    <span class="value-icon">🇳🇬</span>
+                    <h3 class="value-title">Lagos Heritage</h3>
+                    <p class="value-text">Rooted in the vibrant energy of Lagos, capturing local soul in every olfactory profile.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🧪</span>
+                    <h3 class="value-title">Perfumer Blended</h3>
+                    <p class="value-text">Hand-blended by master perfumers, ensuring every batch is distinct and long-lasting.</p>
+                </div>
+                <div class="value-card">
+                    <span class="value-icon">🌱</span>
+                    <h3 class="value-title">Ethical Sourcing</h3>
+                    <p class="value-text">We source premium, organic ingredients ethically from sustainable local and global suppliers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-section section-padding reveal">
+        <div class="container">
+            <h2 class="section-title">THE MATURATION PROCESS</h2>
+            <div class="process-grid">
+                <div class="process-step">
+                    <h3>01. Sourcing</h3>
+                    <p>We source pure essential oils and extracts, partnering with ethical organic growers to gather raw oud, rare rose petals, and citrus essences.</p>
+                </div>
+                <div class="process-step">
+                    <h3>02. Aging</h3>
+                    <p>Our perfumers age each fragrance blend for a minimum of six months. This slow maturation allows the top, middle, and base notes to seamlessly harmonize.</p>
+                </div>
+                <div class="process-step">
+                    <h3>03. Bottling</h3>
+                    <p>Each bottle is filled, sealed, and inspected by hand, before being nestled in our signature high-end packaging.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="narrative-section">
+        <div class="narrative-bg">
+            <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=1600"
+                alt="Sustainable Luxury">
+        </div>
+        <div class="narrative-overlay"></div>
+        <div class="container">
+            <div class="narrative-content reveal">
+                <h2>CONSCIOUS LUXURY</h2>
+                <p>We believe luxury shouldn't cost the Earth. By sourcing ingredients from sustainable local farms and using hand-blown recyclable glass bottles, we craft premium fragrances that respect both nature and community.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter reveal">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>JOIN THE CIRCLE</h2>
+                <p>Be the first to know about limited releases and artisanal updates.</p>
+                <form class="newsletter-form" name="newsletter" method="POST" data-netlify="true">
+                    <input type="hidden" name="form-name" value="newsletter">
+                    <input type="email" name="email" placeholder="ENTER YOUR EMAIL" autocomplete="email" required>
+                    <button type="submit">SUBSCRIBE</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <div class="footer-logo">ANTIGRAVITY</div>
+                    <p class="footer-desc">Crafting the future of luxury fragrances, one bespoke bottle at a time.
+                        Designed in Lagos, worn everywhere.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>SHOP</h4>
+                    <ul class="footer-links">
+                        <li><a href="shop.html">MENS</a></li>
+                        <li><a href="shop.html">WOMENS</a></li>
+                        <li><a href="shop.html">UNISEX</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>COMPANY</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">OUR STORY</a></li>
+                        <li><a href="contact.html">CONTACT</a></li>
+                        <li><a href="#">SUSTAINABILITY</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>LEGAL</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">PRIVACY POLICY</a></li>
+                        <li><a href="#">TERMS OF SERVICE</a></li>
+                        <li><a href="#">REFUND POLICY</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 ANTIGRAVITY PERFUMES. ALL RIGHTS RESERVED.</span>
+                <span>LAGOS, NIGERIA</span>
+            </div>
+        </div>
+    </footer>
+
+    +
+
+    <!-- Supabase JS Client (Required for main.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
