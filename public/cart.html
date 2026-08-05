@@ -9,11 +9,10 @@
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <style>
     :root {
-      --checkout-bg: #ffffff;
-      --accent: #27AE60;
-      /* The green from the screenshot */
-      --text: #333333;
-      --light: #f7f7f7;
+      --checkout-bg: #0E0C0A;
+      --accent: #C5A880;
+      --text: #F4EFE6;
+      --light: #151210;
     }
 
     body {
@@ -105,7 +104,9 @@
     textarea {
       width: 100%;
       padding: 14px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background-color: #1D1915;
+      color: #F4EFE6;
       border-radius: 8px;
       font-size: 1rem;
       transition: border-color 0.3s;
@@ -114,6 +115,7 @@
     input:focus {
       outline: none;
       border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(197, 168, 128, 0.15);
     }
 
     .phone-input {
@@ -149,10 +151,10 @@
       width: 100%;
       padding: 18px;
       background: var(--accent);
-      color: white;
+      color: #0E0C0A;
       border: none;
       border-radius: 12px;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 1.1rem;
       cursor: pointer;
       transition: 0.3s;
@@ -160,7 +162,7 @@
     }
 
     .checkout-btn:hover {
-      background: #219150;
+      background: var(--accent-dark);
     }
 
     .back-btn {
@@ -277,12 +279,12 @@
         </div>
       </div>
       <div
-        style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 30px; background: #F9F9F9; padding: 15px; border-radius: 12px;">
+        style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 30px; background: var(--light); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05);">
         <input type="checkbox" id="isWhatsApp" style="width: auto; margin-top: 4px;">
         <div>
           <label for="isWhatsApp" style="margin-bottom: 4px; display: block; font-weight: 700;">Is this your WhatsApp
             number?</label>
-          <span style="font-size: 0.8rem; color: #666;">We’ll use this for order confirmation and delivery
+          <span style="font-size: 0.8rem; color: #8E8377;">We’ll use this for order confirmation and delivery
             updates.</span>
         </div>
       </div>
@@ -363,23 +365,23 @@
 
     <!-- STEP 4: THANK YOU -->
     <section id="step-4" class="form-section" style="text-align: center; padding: 40px 10px;">
-      <div style="width: 80px; height: 80px; background: #e8f5e9; color: #27ae60; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px auto;">
+      <div style="width: 80px; height: 80px; background: rgba(197, 168, 128, 0.1); color: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 20px auto; border: 1px solid rgba(197, 168, 128, 0.2);">
         ✓
       </div>
-      <h2 style="font-family: 'Outfit'; font-size: 2.5rem; margin-bottom: 15px;">Payment Successful!</h2>
-      <p id="ty-main-text" style="color: #666; font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6;">Thank you for your purchase. We are preparing your order.</p>
+      <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 15px; font-weight: 400;">Payment Successful!</h2>
+      <p id="ty-main-text" style="color: #8E8377; font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6;">Thank you for your purchase. We are preparing your order.</p>
       
-      <div style="background: #f9f9f9; padding: 25px; border-radius: 15px; margin-bottom: 40px; text-align: left;">
-        <p style="margin-bottom: 5px; font-weight: 600; color: #555;">Payment Reference</p>
-        <p id="thank-you-ref" style="font-family: monospace; font-size: 1.1rem; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 15px;">...</p>
+      <div style="background: var(--light); padding: 25px; border-radius: 15px; margin-bottom: 40px; text-align: left; border: 1px solid rgba(255, 255, 255, 0.05);">
+        <p style="margin-bottom: 5px; font-weight: 600; color: #8E8377;">Payment Reference</p>
+        <p id="thank-you-ref" style="font-family: monospace; font-size: 1.1rem; background: #1D1915; padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 15px;">...</p>
 
-        <p style="margin-bottom: 5px; font-weight: 600; color: #555;">Order ID(s)</p>
-        <p id="thank-you-order-id" style="font-family: monospace; font-size: 1.1rem; background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee; color: #27AE60; font-weight: bold;">...</p>
+        <p style="margin-bottom: 5px; font-weight: 600; color: #8E8377;">Order ID(s)</p>
+        <p id="thank-you-order-id" style="font-family: monospace; font-size: 1.1rem; background: #1D1915; padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); color: var(--accent); font-weight: bold;">...</p>
       </div>
 
       <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-        <button class="checkout-btn" style="flex: 1; margin: 0; min-width: 200px; background: black;" onclick="window.location.href='shop.html'">Continue Shopping</button>
-        <button class="checkout-btn" style="flex: 1; margin: 0; background: #25D366; min-width: 200px;" id="wa-support-btn">WhatsApp Support</button>
+        <button class="checkout-btn" style="flex: 1; margin: 0; min-width: 200px; background: var(--accent); color: #0E0C0A;" onclick="window.location.href='shop.html'">Continue Shopping</button>
+        <button class="checkout-btn" style="flex: 1; margin: 0; background: #25D366; color: white; min-width: 200px;" id="wa-support-btn">WhatsApp Support</button>
       </div>
     </section>
   </div>

@@ -389,18 +389,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 width: 450px;
                 max-width: 100vw;
                 height: 100vh;
-                background: white;
+                background: #0E0C0A;
+                color: var(--primary);
                 z-index: 10000;
-                box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.3);
                 transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                 display: flex;
                 flex-direction: column;
+                border-left: 1px solid rgba(255, 255, 255, 0.08);
             }
             .cart-sidebar.active { right: 0; }
             .cart-overlay {
                 position: fixed;
                 inset: 0;
-                background: rgba(0,0,0,0.4);
+                background: rgba(0,0,0,0.6);
                 backdrop-filter: blur(4px);
                 z-index: 9999;
                 opacity: 0;
@@ -413,11 +415,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                border-bottom: 1px solid #eee;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             }
-            .cart-sidebar-header h2 { font-family: 'Outfit'; font-size: 1.5rem; font-weight: 800; letter-spacing: 0.05em; margin: 0; }
+            .cart-sidebar-header h2 { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.05em; margin: 0; }
             .cart-sidebar-header button { background: none; border: none; font-size: 2.5rem; cursor: pointer; color: #999; transition: 0.3s; line-height: 1; margin-top: -5px; }
-            .cart-sidebar-header button:hover { color: black; transform: scale(1.1); }
+            .cart-sidebar-header button:hover { color: var(--accent); transform: scale(1.1); }
             
             .cart-items-container {
                 flex: 1;
@@ -432,22 +434,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 gap: 20px;
                 align-items: center;
             }
-            .cart-item-sidebar img { width: 90px; height: 90px; object-fit: contain; background: #f9f9f9; border-radius: 12px; padding: 10px; }
+            .cart-item-sidebar img { width: 90px; height: 90px; object-fit: contain; background: #1D1915; border-radius: 12px; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.05); }
             .cart-item-sidebar-info { flex: 1; }
-            .cart-item-sidebar-info h4 { font-family: 'Outfit'; font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; text-transform: uppercase; margin-top: 0; }
-            .cart-item-sidebar-info p { font-family: 'Outfit'; font-weight: 600; color: #666; font-size: 0.95rem; margin: 0; }
+            .cart-item-sidebar-info h4 { font-family: var(--font-serif); font-size: 1.2rem; font-weight: 400; margin-bottom: 5px; margin-top: 0; color: var(--primary); }
+            .cart-item-sidebar-info p { font-family: 'Outfit'; font-weight: 600; color: var(--text-muted); font-size: 0.95rem; margin: 0; }
             
             .cart-sidebar-footer {
                 padding: 30px;
-                border-top: 1px solid #eee;
-                background: #fafafa;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                background: #110F0D;
             }
             .cart-sidebar-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.4rem; margin-bottom: 25px; font-family: 'Outfit'; }
             .sidebar-checkout-btn {
                 width: 100%;
                 padding: 20px;
-                background: black;
-                color: white;
+                background: var(--accent);
+                color: #0E0C0A;
                 border: none;
                 border-radius: 12px;
                 font-weight: 700;
@@ -457,8 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 transition: 0.3s;
             }
             .sidebar-checkout-btn:hover {
+                background: var(--accent-dark);
                 transform: translateY(-3px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                box-shadow: 0 10px 20px rgba(197, 168, 128, 0.2);
             }
             .sidebar-checkout-btn:disabled { opacity: 0.5; pointer-events: none; }
         `;
