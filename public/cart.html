@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout | ANTIGRAVITY</title>
+  <title>Checkout | MAISON ÉLIXIR</title>
   <link rel="stylesheet" href="css/main.css">
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <style>
@@ -392,7 +392,7 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     let currentStep = 1;
-    let cart = JSON.parse(localStorage.getItem('antigravity_cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem('maison_elixir_cart') || '[]');
     let shippingFee = 0;
 
     function initCheckout() {
@@ -646,7 +646,7 @@
 
       const { error } = await supabaseClient.from('orders').insert(ordersToInsert);
 
-      localStorage.removeItem('antigravity_cart');
+      localStorage.removeItem('maison_elixir_cart');
       cart = [];
       document.getElementById('thank-you-ref').textContent = reference;
       document.getElementById('thank-you-order-id').textContent = generatedOrderIds.join(', ');

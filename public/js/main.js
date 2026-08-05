@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(sizeStyles);
 
     // 2. CART STATE
-    let cart = JSON.parse(localStorage.getItem('antigravity_cart') || '[]');
+    let cart = JSON.parse(localStorage.getItem('maison_elixir_cart') || '[]');
     updateCartIcon();
 
     // 3. DYNAMIC LOADING & REALTIME
@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (document.querySelector('.products-grid')) {
                     // Get current filter
                     const activeBtn = document.querySelector('.filter-btn.active');
-                    const gender = activeBtn ? activeBtn.textContent.toLowerCase() : 'all';
-                    let genderFilter = 'all';
-                    if (gender.includes('unisex')) genderFilter = 'unisex';
-                    else if (gender.includes('men')) genderFilter = 'men';
-                    else if (gender.includes('women')) genderFilter = 'women';
-                    loadShopProducts(genderFilter);
+                    const text = activeBtn ? activeBtn.textContent.toLowerCase() : 'all';
+                    let categoryFilter = 'all';
+                    if (text.includes('extrait')) categoryFilter = 'Extrait de Parfum';
+                    else if (text.includes('parfum')) categoryFilter = 'Eau de Parfum';
+                    else if (text.includes('toilette')) categoryFilter = 'Eau de Toilette';
+                    loadShopProducts(categoryFilter);
                 }
             })
             .subscribe();
@@ -68,24 +68,39 @@ document.addEventListener('DOMContentLoaded', () => {
             grid.innerHTML = '';
             featuredProducts.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'collection-card';
+                card.className = 'product-card';
                 card.style.cursor = 'pointer';
                 card.innerHTML = `
-                    <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}" class="collection-img">
-                    <div class="collection-overlay">
-                        <h3 class="collection-name">${escapeHTML(product.name)}</h3>
+                    <div class="product-display">
+                        <div class="badge-bestseller">BESTSELLER</div>
+                        <button class="btn-wishlist">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
+                        <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}">
+                    </div>
+                    <div class="product-info">
+                        <h3>${escapeHTML(product.name)}</h3>
+                        <p class="product-price">₦${Number(product.price).toLocaleString()}</p>
                     </div>
                 `;
-                card.addEventListener('click', () => { window.location.href = 'shop.html'; });
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.btn-wishlist')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    window.location.href = 'shop.html';
+                });
                 grid.appendChild(card);
             });
             revealElements();
         }
     }
 
-    async function loadShopProducts(gender = 'all') {
+    async function loadShopProducts(categoryFilter = 'all') {
         let query = supabaseClient.from('products').select('*');
-        if (gender !== 'all') query = query.eq('gender', gender);
+        if (categoryFilter !== 'all') {
+            query = query.eq('category', categoryFilter);
+        }
 
         const { data: products, error } = await query.order('created_at', { ascending: false });
 
@@ -96,18 +111,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.innerHTML = `
-                    <div class="product-img-wrapper">
+                    <div class="product-display">
+                        <div class="badge-bestseller">BESTSELLER</div>
+                        <button class="btn-wishlist">
+                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
                         <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}">
                     </div>
                     <div class="product-info">
-                        <div>
-                            <h3 class="product-name">${escapeHTML(product.name)}</h3>
-                            <span class="product-category">${escapeHTML(product.category || 'Footwear')}</span>
-                        </div>
-                        <span class="product-price">₦${Number(product.price).toLocaleString()}</span>
+                        <h3>${escapeHTML(product.name)}</h3>
+                        <p class="product-price">₦${Number(product.price).toLocaleString()}</p>
                     </div>
                 `;
-                card.addEventListener('click', () => openProductModal(product));
+                card.addEventListener('click', (e) => {
+                    if (e.target.closest('.btn-wishlist')) {
+                        e.stopPropagation();
+                        const path = e.target.closest('.btn-wishlist').querySelector('path');
+                        if (path.style.fill === 'rgb(26, 26, 26)') {
+                            path.style.fill = 'none';
+                        } else {
+                            path.style.fill = '#1A1A1A';
+                        }
+                        return;
+                    }
+                    openProductModal(product);
+                });
                 grid.appendChild(card);
             });
             revealElements();
@@ -218,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cartItem = { ...product };
         if (size) cartItem.name = `${product.name} (${size})`;
         cart.push(cartItem);
-        localStorage.setItem('antigravity_cart', JSON.stringify(cart));
+        localStorage.setItem('maison_elixir_cart', JSON.stringify(cart));
         updateCartIcon();
         if (typeof renderCartSidebar === 'function') {
             renderCartSidebar();
@@ -268,12 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const btnText = btn.textContent.toLowerCase();
-            let gender = 'all';
-            if (btnText.includes('unisex')) gender = 'unisex';
-            else if (btnText.includes('men')) gender = 'men';
-            else if (btnText.includes('women')) gender = 'women';
-            loadShopProducts(gender);
+            const btnText = btn.textContent.toLowerCase().trim();
+            let categoryFilter = 'all';
+            if (btnText.includes('extrait')) categoryFilter = 'Extrait de Parfum';
+            else if (btnText.includes('parfum')) categoryFilter = 'Eau de Parfum';
+            else if (btnText.includes('toilette')) categoryFilter = 'Eau de Toilette';
+            loadShopProducts(categoryFilter);
         });
     });
 
@@ -493,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', (e) => {
                 const idx = e.target.getAttribute('data-index');
                 cart.splice(idx, 1);
-                localStorage.setItem('antigravity_cart', JSON.stringify(cart));
+                localStorage.setItem('maison_elixir_cart', JSON.stringify(cart));
                 updateCartIcon();
                 renderCartSidebar();
                 

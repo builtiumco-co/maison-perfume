@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
   --primary: #111;
@@ -9,6 +9,7 @@
   --accent: #C5A880; /* Premium luxury gold/amber accent */
   --accent-light: #F4EFE6;
   --accent-dark: #A3875E;
+  --font-serif: 'Cormorant Garamond', serif;
 }
 
 * {
@@ -43,6 +44,33 @@ body {
   border-bottom: 1px solid rgba(0, 0, 0, 0.03);
 }
 
+/* Homepage Specific Header Styling */
+.home-page .header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+.home-page .header .logo a {
+  color: #FFFFFF;
+}
+.home-page .header .nav-link {
+  color: #FFFFFF;
+  opacity: 0.8;
+}
+.home-page .header .nav-link:hover {
+  color: var(--accent);
+  opacity: 1;
+}
+.home-page .header .cart-trigger {
+  color: #FFFFFF;
+}
+.home-page .header .cart-count {
+  border-color: #111;
+}
+
 .header-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -56,8 +84,9 @@ body {
   font-family: 'Outfit';
   font-size: 1.5rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .logo a {
@@ -134,8 +163,9 @@ body {
 
 /* Hero Section */
 .hero {
-  background-color: var(--bg-hero);
-  height: calc(100vh - 160px);
+  background: linear-gradient(135deg, #111111 0%, #1c1510 50%, #2f2015 100%);
+  color: #FFFFFF;
+  height: calc(100vh - 100px);
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -186,11 +216,50 @@ body {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-.shop-btn:hover {
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 45px;
+  background-color: #FFFFFF;
+  color: #000000;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  border-radius: 100px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border: 1px solid #FFFFFF;
+}
+.btn-pill:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(197, 168, 128, 0.4);
   background-color: var(--accent);
-  color: #FFF;
-  transform: scale(1.05) translateY(-5px);
-  box-shadow: 0 20px 60px rgba(197, 168, 128, 0.35);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+
+.btn-pill-outline {
+  display: inline-flex;
+  align-items: center;
+  padding: 18px 45px;
+  background-color: transparent;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.15em;
+  border-radius: 100px;
+  transition: var(--transition-smooth);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.btn-pill-outline:hover {
+  transform: translateY(-3px);
+  border-color: #FFFFFF;
+  background-color: rgba(255,255,255,0.1);
 }
 
 .product-img, .hero-img {
@@ -247,13 +316,13 @@ body {
 }
 
 .hero-title {
-  font-family: 'Outfit';
-  font-size: 5rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 50px;
-  line-height: 1;
+  font-family: var(--font-serif);
+  font-size: 5.5rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin-bottom: 40px;
+  line-height: 1.1;
 }
 
 .hero-metadata {
@@ -323,12 +392,12 @@ body {
 
 /* Collections Section */
 .section-title {
-  font-family: 'Outfit';
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  margin-bottom: 60px;
-  text-transform: uppercase;
+  font-family: var(--font-serif);
+  font-size: 3.2rem;
+  font-weight: 400;
+  letter-spacing: 0em;
+  margin-bottom: 50px;
+  text-transform: none;
 }
 
 .collections-grid {
@@ -340,7 +409,7 @@ body {
 .collection-card {
   position: relative;
   aspect-ratio: 4/5;
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
   cursor: pointer;
   transition: var(--transition-smooth);
@@ -356,20 +425,49 @@ body {
 .collection-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 60%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
   padding: 40px;
   transition: var(--transition-smooth);
 }
 
 .collection-name {
   color: #FFF;
-  font-family: 'Outfit';
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  text-transform: none;
+  margin-bottom: 10px;
+}
+
+.collection-desc {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  max-width: 250px;
+  line-height: 1.5;
+}
+
+.collection-explore {
+  font-family: 'Outfit', sans-serif;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.collection-card:hover .collection-explore {
+  color: #FFF;
+  transform: translateX(5px);
 }
 
 .collection-card:hover {
@@ -727,4 +825,139 @@ body {
   .narrative-content h2 { font-size: 2rem; }
   .newsletter-form { flex-direction: column; }
   .newsletter-form button { padding: 20px; }
+}
+
+/* Maison Elixir Specific Styles */
+.product-card {
+  position: relative;
+  text-align: left;
+  transition: var(--transition-smooth);
+}
+.product-display {
+  position: relative;
+  background-color: #F8F6F0;
+  border-radius: 24px;
+  margin-bottom: 20px;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+.product-card:hover .product-display {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+.product-card:hover .product-display img {
+  transform: scale(1.08);
+}
+.badge-bestseller {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 100px;
+  z-index: 5;
+}
+.btn-wishlist {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  background-color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  transition: var(--transition-smooth);
+  z-index: 5;
+}
+.btn-wishlist:hover {
+  transform: scale(1.1);
+  background-color: var(--accent-light);
+}
+.btn-wishlist svg {
+  width: 18px;
+  height: 18px;
+  stroke: #1A1A1A;
+  stroke-width: 2;
+  fill: none;
+  transition: var(--transition-smooth);
+}
+.btn-wishlist:hover svg {
+  fill: #1A1A1A;
+}
+.product-info {
+  display: block;
+}
+.product-info h3 {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 5px;
+  text-transform: none;
+}
+.product-price {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1A1A1A;
+  opacity: 0.8;
+}
+
+/* Footer override style matching 4.png */
+.footer-logo {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  margin-bottom: 25px;
+}
+.footer-column h4 {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+.footer-links a {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #888;
+}
+.footer-links a:hover {
+  color: var(--accent);
+}
+.social-icons-row {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.social-icon-btn {
+  color: #888;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+.social-icon-btn:hover {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+.social-icon-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
