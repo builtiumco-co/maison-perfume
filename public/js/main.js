@@ -556,7 +556,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const links = `
             <a href="index.html" class="nav-link">HOME</a>
             <a href="shop.html" class="nav-link">SHOP</a>
-            <a href="about.html" class="nav-link">ABOUT US</a>
+            <a href="about.html" class="nav-link">HOUSE</a>
+            <a href="about.html" class="nav-link">JOURNAL</a>
             <a href="contact.html" class="nav-link">CONTACT</a>
         `;
 
