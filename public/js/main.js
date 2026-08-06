@@ -594,8 +594,6 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="about.html" class="nav-link">HOUSE</a>
             <a href="about.html" class="nav-link">JOURNAL</a>
             <a href="contact.html" class="nav-link">CONTACT</a>
-            <a href="shop.html" class="nav-link">WISHLIST</a>
-            <a href="admin/login.html" class="nav-link">ACCOUNT</a>
         `;
 
         mobileMenu.innerHTML = `
