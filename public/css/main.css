@@ -391,14 +391,27 @@ body {
   transform: translateY(0);
 }
 
-/* Collections Section */
+/* Section Titles & Subtitles High Contrast */
+.section-subtitle {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #A88B63 !important; /* Rich Warm Bronze Gold */
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
 .section-title {
-  font-family: var(--font-serif);
-  font-size: 3.2rem;
-  font-weight: 400;
-  letter-spacing: 0em;
-  margin-bottom: 50px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #0E0C0A !important; /* Rich Dark Charcoal / Black */
+  letter-spacing: -0.01em;
+  margin-bottom: 35px;
   text-transform: none;
+  line-height: 1.25;
 }
 
 .collections-grid {
