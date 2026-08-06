@@ -594,12 +594,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <a href="about.html" class="nav-link">HOUSE</a>
             <a href="about.html" class="nav-link">JOURNAL</a>
             <a href="contact.html" class="nav-link">CONTACT</a>
+            <a href="shop.html" class="nav-link">WISHLIST</a>
+            <a href="admin/login.html" class="nav-link">ACCOUNT</a>
         `;
 
         mobileMenu.innerHTML = `
             <div class="mobile-menu-header">
                 <h2>MAISON ÉLIXIR</h2>
-                <button class="close-mobile-btn" style="font-weight: 300;">&times;</button>
+                <button class="close-mobile-btn" aria-label="Close Menu">&times;</button>
             </div>
             <div class="mobile-menu-links">
                 ${links}
@@ -611,19 +613,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const style = document.createElement('style');
         style.textContent = `
-            .mobile-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 10000; opacity: 0; pointer-events: none; transition: 0.4s; }
+            .mobile-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10000; opacity: 0; pointer-events: none; transition: 0.4s ease; }
             .mobile-backdrop.active { opacity: 1; pointer-events: all; }
-            .mobile-menu-overlay { position: fixed; top: 0; right: 0; width: 85vw; max-width: 400px; height: 100vh; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 10001; display: flex; flex-direction: column; transform: translateX(100%); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 40px rgba(0,0,0,0.08); border-left: 1px solid rgba(255,255,255,0.4); }
+            .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 85vw; max-width: 360px; height: 100vh; background: #0A0A0A; z-index: 10001; display: flex; flex-direction: column; transform: translateX(-100%); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 20px 0 40px rgba(0,0,0,0.7); border-right: 1px solid rgba(197,168,128,0.2); color: #F4EFE6; }
             .mobile-menu-overlay.active { transform: translateX(0); }
-            .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 35px 40px; border-bottom: 1px solid rgba(0,0,0,0.05); }
-            .mobile-menu-header h2 { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400; letter-spacing: 0.1em; margin: 0; }
-            .close-mobile-btn { background: none; border: none; font-size: 3rem; color: #999; cursor: pointer; line-height: 1; margin-top: -5px; transition: 0.3s; }
-            .close-mobile-btn:hover { color: black; transform: rotate(90deg) scale(1.1); }
-            .mobile-menu-links { display: flex; flex-direction: column; gap: 35px; padding: 60px 40px; }
-            .mobile-menu-links a { font-family: 'Outfit'; font-size: 1.8rem; font-weight: 700; text-decoration: none; color: black; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.5; transition: 0.3s; position: relative; width: fit-content; }
-            .mobile-menu-links a::after { content: ''; position: absolute; bottom: -8px; left: 0; width: 0; height: 2px; background: black; transition: 0.3s; }
-            .mobile-menu-links a:hover, .mobile-menu-links a.active { opacity: 1; transform: translateX(15px); }
-            .mobile-menu-links a:hover::after, .mobile-menu-links a.active::after { width: 100%; }
+            .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding: 25px 24px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+            .mobile-menu-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.1em; margin: 0; color: #F4EFE6; }
+            .close-mobile-btn { background: none; border: none; font-size: 2.2rem; color: #C5A880; cursor: pointer; line-height: 1; transition: 0.3s; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+            .close-mobile-btn:hover { color: white; transform: rotate(90deg); }
+            .mobile-menu-links { display: flex; flex-direction: column; gap: 4px; padding: 24px; }
+            .mobile-menu-links a { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; text-decoration: none; color: #F4EFE6; text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s ease; }
+            .mobile-menu-links a:hover, .mobile-menu-links a.active { color: #C5A880; transform: translateX(8px); }
         `;
         document.head.appendChild(style);
 
