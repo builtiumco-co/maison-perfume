@@ -177,34 +177,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const formattedPrice = `₦${Number(product.price).toLocaleString()}`;
         document.getElementById('modal-price').textContent = formattedPrice;
         document.getElementById('btn-price-display').textContent = formattedPrice;
-        document.getElementById('modal-description').textContent = product.description || 'Experience the pinnacle of luxury with our signature slides. Crafted with meticulous attention to detail and premium materials for unparalleled comfort.';
+        document.getElementById('modal-description').textContent = product.description || 'Experience the pinnacle of luxury with our signature fragrance. Crafted with rare botanical extracts, rich essential oils, and meticulous artistry for an unforgettable sillage.';
 
-        // SIZES LOGIC
+        // BOTTLE VOLUME LOGIC
+        selectedSize = product.sizes || '100ml';
         const sizeContainer = document.getElementById('modal-size-container');
-        const sizeGrid = document.getElementById('modal-size-grid');
-        if (sizeContainer && sizeGrid) {
-            sizeGrid.innerHTML = '';
-            if (product.sizes && product.sizes.trim() !== '') {
-                const sizesArr = product.sizes.split(',').map(s => s.trim()).filter(s => s);
-                if (sizesArr.length > 0) {
-                    sizeContainer.style.display = 'block';
-                    sizesArr.forEach(size => {
-                        const btn = document.createElement('button');
-                        btn.className = 'size-btn';
-                        btn.textContent = size;
-                        btn.onclick = () => {
-                            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-                            btn.classList.add('active');
-                            selectedSize = size;
-                        };
-                        sizeGrid.appendChild(btn);
-                    });
-                } else {
-                    sizeContainer.style.display = 'none';
-                }
-            } else {
-                sizeContainer.style.display = 'none';
-            }
+        if (sizeContainer) {
+            sizeContainer.innerHTML = `<div style="font-size: 0.85rem; font-weight: 700; color: #C5A880; text-transform: uppercase; letter-spacing: 0.1em;">VOLUME: ${escapeHTML(selectedSize)}</div>`;
+            sizeContainer.style.display = 'block';
         }
 
         // Setup Gallery
@@ -240,19 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addCartBtn?.addEventListener('click', () => {
         if (currentModalProduct) {
-            if (currentModalProduct.sizes && currentModalProduct.sizes.trim() !== '') {
-                const arr = currentModalProduct.sizes.split(',').filter(s => s.trim());
-                if (arr.length > 0 && !selectedSize) {
-                    const sb = document.getElementById('modal-size-grid');
-                    if (sb) {
-                        sb.style.transform = 'translateY(-5px)';
-                        setTimeout(() => sb.style.transform = '', 200);
-                    }
-                    alert('Please select your preferred size to continue. 🖤');
-                    return;
-                }
-            }
-            addToCart(currentModalProduct, selectedSize);
+            addToCart(currentModalProduct, selectedSize || currentModalProduct.sizes || '100ml');
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
@@ -680,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    console.log('Top Slides - Checkout and Cart Logic Initialized. 🖤');
+    console.log('Maison Élixir - Checkout and Cart Logic Initialized. 🖤');
     revealElements();
     initHeroSwiper();
     injectCartSidebar();

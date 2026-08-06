@@ -370,7 +370,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('p-price').value = product.price;
                 document.getElementById('p-main-image').value = product.main_image || '';
                 document.getElementById('p-other-images').value = (product.other_images || []).join(', ');
-                document.getElementById('p-sizes').value = product.sizes || '';
+                document.getElementById('p-sizes').value = product.sizes || '100ml';
                 document.getElementById('p-description').value = product.description || '';
                 
                 const mainPreview = document.getElementById('main-img-preview');
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             description: formData.get('description'),
             gender: formData.get('gender') || 'men',
             category: checkedCategories || formData.get('category') || 'EAU DE PARFUM',
-            sizes: formData.get('sizes') || '',
+            sizes: formData.get('sizes') || '100ml',
             quantity_in_stock: Number(formData.get('quantity_in_stock') || 0),
             is_featured: formData.get('is_featured') === 'on'
         };
