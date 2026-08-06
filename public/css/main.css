@@ -579,8 +579,11 @@ body {
 }
 
 .product-price {
-  font-weight: 600;
-  opacity: 0.6;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #C5A880;
+  opacity: 1;
 }
 
 /* Narrative Section */
@@ -916,10 +919,10 @@ body {
 }
 .product-price {
   font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: #1A1A1A;
-  opacity: 0.8;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #C5A880 !important;
+  opacity: 1 !important;
 }
 
 /* Footer override style matching 4.png */
