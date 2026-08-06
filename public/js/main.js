@@ -63,12 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
             .eq('is_featured', true)
             .limit(3);
 
-        const grid = document.querySelector('.product-grid');
+        const grid = document.querySelector('.product-grid-redesigned') || document.querySelector('.product-grid');
         if (!error && grid) {
             grid.innerHTML = '';
             if (!featuredProducts || featuredProducts.length === 0) {
                 grid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--primary);">
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #666;">
                         <p style="font-size: 1.1rem; opacity: 0.75; font-family: var(--font-serif); font-style: italic;">No featured fragrances listed yet. Add products from the Admin Portal to display them here.</p>
                     </div>
                 `;
@@ -76,23 +76,43 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             featuredProducts.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'product-card';
+                card.className = grid.classList.contains('product-grid-redesigned') ? 'product-card-redesigned' : 'product-card';
                 card.style.cursor = 'pointer';
-                card.innerHTML = `
-                    <div class="product-display">
-                        <div class="badge-bestseller">BESTSELLER</div>
-                        <button class="btn-wishlist">
-                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        </button>
-                        <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}">
-                    </div>
-                    <div class="product-info">
-                        <h3>${escapeHTML(product.name)}</h3>
-                        <p class="product-price">₦${Number(product.price).toLocaleString()}</p>
-                    </div>
-                `;
+                if (grid.classList.contains('product-grid-redesigned')) {
+                    card.innerHTML = `
+                        <div class="product-image-container">
+                            <div class="bestseller-badge">BESTSELLER</div>
+                            <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}" class="product-img-redesigned">
+                            <button class="btn-wishlist-redesigned" aria-label="Add to Wishlist">
+                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            </button>
+                            <button class="btn-quick-add">QUICK ADD</button>
+                        </div>
+                        <div class="product-details-redesigned">
+                            <h3 class="product-name-redesigned">${escapeHTML(product.name)}</h3>
+                            <p class="product-note">${escapeHTML(product.category || 'Eau de Parfum')} | ${escapeHTML(product.sizes || '100ml')}</p>
+                            <div class="product-price-redesigned">₦${Number(product.price).toLocaleString()}</div>
+                            <span class="link-underline">View Details</span>
+                        </div>
+                    `;
+                } else {
+                    card.innerHTML = `
+                        <div class="product-display">
+                            <div class="badge-bestseller">BESTSELLER</div>
+                            <button class="btn-wishlist">
+                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            </button>
+                            <img src="${escapeHTML(product.main_image)}" alt="${escapeHTML(product.name)}">
+                        </div>
+                        <div class="product-info">
+                            <h3>${escapeHTML(product.name)}</h3>
+                            <p class="product-price">₦${Number(product.price).toLocaleString()}</p>
+                        </div>
+                    `;
+                }
+
                 card.addEventListener('click', (e) => {
-                    if (e.target.closest('.btn-wishlist')) {
+                    if (e.target.closest('.btn-wishlist') || e.target.closest('.btn-wishlist-redesigned')) {
                         e.stopPropagation();
                         return;
                     }
