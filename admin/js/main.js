@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         else mainStatus.textContent = 'Using basic URL link';
                     }
                 }
-                document.getElementById('p-gender').value = product.gender || 'unisex';
+                document.getElementById('p-gender').value = product.gender || 'men';
                 document.getElementById('p-category').value = product.category || '';
                 document.getElementById('p-stock').value = product.quantity_in_stock || 0;
                 document.getElementById('p-featured').checked = product.is_featured || false;
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             main_image: formData.get('main_image'),
             other_images: (formData.get('other_images') || '').split(',').map(u => u.trim()).filter(u => u !== ""),
             description: formData.get('description'),
-            gender: formData.get('gender') || 'unisex',
+            gender: formData.get('gender') || 'men',
             category: formData.get('category') || 'EAU DE PARFUM',
             sizes: formData.get('sizes') || '',
             quantity_in_stock: Number(formData.get('quantity_in_stock') || 0),
