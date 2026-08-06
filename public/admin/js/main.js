@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadOrders();
     loadProducts();
     loadLocations();
+    loadCategories();
     setupSubscriptions();
 
     // 3. REAL-TIME SUBSCRIPTIONS
@@ -127,6 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             .on('postgres_changes', { event: '*', schema: 'public', table: 'products' }, loadProducts)
             .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, loadOrders)
             .on('postgres_changes', { event: '*', schema: 'public', table: 'locations' }, loadLocations)
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, loadCategories)
             .subscribe();
     }
 
@@ -386,6 +388,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.getElementById('p-stock').value = product.quantity_in_stock || 0;
                 document.getElementById('p-featured').checked = product.is_featured || false;
 
+                renderCategoryCheckboxes(product.category || '');
                 addProductModal.classList.add('active');
             });
         });
@@ -472,6 +475,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             mainImgPreview.src = '';
         }
         if (mainImgStatus) mainImgStatus.textContent = "We'll automatically fetch, crop, and optimize it.";
+        renderCategoryCheckboxes('');
         addProductModal.classList.add('active');
     });
     closeModalBtn?.addEventListener('click', () => addProductModal.classList.remove('active'));
@@ -487,6 +491,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const formData = new FormData(addProductForm);
         const productId = formData.get('id');
 
+        // Gather checked categories
+        const checkedCategories = Array.from(document.querySelectorAll('.p-category-checkbox:checked'))
+            .map(cb => cb.value)
+            .join(', ');
+
         const productData = {
             name: formData.get('name'),
             price: Number(formData.get('price')),
@@ -494,7 +503,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             other_images: (formData.get('other_images') || '').split(',').map(u => u.trim()).filter(u => u !== ""),
             description: formData.get('description'),
             gender: formData.get('gender') || 'men',
-            category: formData.get('category') || 'EAU DE PARFUM',
+            category: checkedCategories || formData.get('category') || 'EAU DE PARFUM',
             sizes: formData.get('sizes') || '',
             quantity_in_stock: Number(formData.get('quantity_in_stock') || 0),
             is_featured: formData.get('is_featured') === 'on'
@@ -621,6 +630,99 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             loadLocations();
         }
+    });
+
+    // 7b. CATEGORIES MANAGEMENT
+    let storeCategories = ['Eau de Parfum', 'Extrait de Parfum', 'Eau de Toilette', 'Discovery Sets', 'Body Oil'];
+
+    async function loadCategories() {
+        const { data: categories, error } = await supabaseClient
+            .from('categories')
+            .select('*')
+            .order('name', { ascending: true });
+
+        if (!error && categories && categories.length > 0) {
+            storeCategories = categories.map(c => c.name);
+            renderCategoriesTable(categories);
+        } else {
+            const fallbackObjects = storeCategories.map((name, index) => ({ id: `cat-${index}`, name }));
+            renderCategoriesTable(fallbackObjects);
+        }
+    }
+
+    function renderCategoriesTable(categories) {
+        const tbody = document.getElementById('categories-tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        categories.forEach(cat => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${escapeHTML(cat.name)}</strong></td>
+                <td><button class="btn btn-small delete-category text-danger" style="background:none; border:none; cursor:pointer;" data-name="${escapeHTML(cat.name)}" data-id="${escapeHTML(cat.id || '')}">Delete</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Add Delete Handlers
+        document.querySelectorAll('.delete-category').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const name = btn.getAttribute('data-name');
+                const id = btn.getAttribute('data-id');
+                const errMsg = document.getElementById('category-error-msg');
+                if (errMsg) errMsg.style.display = 'none';
+
+                if (confirm(`Delete category "${name}"?`)) {
+                    if (id && !id.startsWith('cat-')) {
+                        const { error } = await supabaseClient.from('categories').delete().eq('id', id);
+                        if (error && errMsg) {
+                            errMsg.style.display = 'block';
+                            errMsg.textContent = 'Deletion issue: ' + error.message;
+                        }
+                    }
+                    storeCategories = storeCategories.filter(c => c !== name);
+                    loadCategories();
+                }
+            });
+        });
+    }
+
+    function renderCategoryCheckboxes(selectedCategoriesString = '') {
+        const container = document.getElementById('product-categories-checkboxes');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const selectedList = (selectedCategoriesString || '')
+            .split(',')
+            .map(s => s.trim().toLowerCase());
+
+        storeCategories.forEach((catName) => {
+            const isChecked = selectedList.includes(catName.toLowerCase());
+            const label = document.createElement('label');
+            label.className = 'category-checkbox-item';
+            label.innerHTML = `
+                <input type="checkbox" value="${escapeHTML(catName)}" class="p-category-checkbox" ${isChecked ? 'checked' : ''}>
+                <span>${escapeHTML(catName)}</span>
+            `;
+            container.appendChild(label);
+        });
+    }
+
+    // Add Category Handler
+    document.getElementById('add-category-btn')?.addEventListener('click', async () => {
+        const errMsg = document.getElementById('category-error-msg');
+        if (errMsg) errMsg.style.display = 'none';
+
+        const name = prompt('Enter New Category Name (e.g., Extrait de Parfum):');
+        if (!name || !name.trim()) return;
+
+        const newCatName = name.trim();
+        if (!storeCategories.includes(newCatName)) {
+            storeCategories.push(newCatName);
+        }
+
+        const { error } = await supabaseClient.from('categories').insert([{ name: newCatName }]);
+        loadCategories();
     });
 
     // 8. MESSAGING CENTER LOGIC

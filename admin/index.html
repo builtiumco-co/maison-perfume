@@ -171,13 +171,17 @@
               </select>
             </div>
             <div class="form-group" style="flex:1">
-              <label for="p-category">Category Concentration</label>
-              <input type="text" id="p-category" name="category" placeholder="EAU DE PARFUM">
-            </div>
-            <div class="form-group" style="flex:1">
               <label for="p-stock">Initial Stock</label>
               <input type="number" id="p-stock" name="quantity_in_stock" value="10">
             </div>
+          </div>
+
+          <div class="form-group">
+            <label>Product Categories (Check to include in categories)</label>
+            <div id="product-categories-checkboxes" class="categories-checkbox-grid">
+              <!-- Categories checkboxes rendered dynamically -->
+            </div>
+            <input type="hidden" id="p-category" name="category">
           </div>
 
           <div class="form-group">
@@ -249,6 +253,29 @@
             </thead>
             <tbody id="locations-tbody">
               <!-- Locations loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card card-narrow" style="margin-top: 40px;">
+        <div class="page-header" style="margin-bottom: 20px;">
+          <h3 style="font-family: 'Outfit'; font-size: 1.25rem;">Store Product Categories</h3>
+          <button class="btn btn-primary btn-small" id="add-category-btn">+ Add Category</button>
+        </div>
+        <div id="category-error-msg"
+          style="color: #E74C3C; font-weight: 600; font-size: 0.9rem; margin-bottom: 15px; padding: 10px; background: #FDEDEC; border-radius: 8px; display: none;">
+        </div>
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Category Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="categories-tbody">
+              <!-- Categories loaded dynamically -->
             </tbody>
           </table>
         </div>
