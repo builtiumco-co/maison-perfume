@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadShopProducts(categoryFilter = 'all') {
         let query = supabaseClient.from('products').select('*');
-        if (categoryFilter !== 'all') {
-            query = query.eq('category', categoryFilter);
+        if (categoryFilter && categoryFilter !== 'all') {
+            query = query.ilike('category', `%${categoryFilter}%`);
         }
 
         const { data: products, error } = await query.order('created_at', { ascending: false });
@@ -274,20 +274,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Filter Logic for Shop Page
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const btnText = btn.textContent.toLowerCase().trim();
-            let categoryFilter = 'all';
-            if (btnText.includes('extrait')) categoryFilter = 'Extrait de Parfum';
-            else if (btnText.includes('parfum')) categoryFilter = 'Eau de Parfum';
-            else if (btnText.includes('toilette')) categoryFilter = 'Eau de Toilette';
-            loadShopProducts(categoryFilter);
+    // Dynamic Live Categories Loader for Shop Page
+    async function loadLiveCategories() {
+        const filtersContainer = document.getElementById('shop-filters-container') || document.querySelector('.shop-filters');
+        if (!filtersContainer) return;
+
+        // Fetch live categories from Supabase categories table
+        const { data: dbCategories } = await supabaseClient
+            .from('categories')
+            .select('*')
+            .order('name', { ascending: true });
+
+        let categoryList = ['Eau de Parfum', 'Extrait de Parfum', 'Eau de Toilette', 'Discovery Sets', 'Body Oil'];
+        if (dbCategories && dbCategories.length > 0) {
+            categoryList = dbCategories.map(c => c.name);
+        }
+
+        filtersContainer.innerHTML = '';
+
+        // Add 'ALL' Button
+        const allBtn = document.createElement('button');
+        allBtn.className = 'filter-btn active';
+        allBtn.textContent = 'ALL';
+        allBtn.setAttribute('data-category', 'all');
+        filtersContainer.appendChild(allBtn);
+
+        // Add Dynamic Category Buttons
+        categoryList.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'filter-btn';
+            btn.textContent = cat.toUpperCase();
+            btn.setAttribute('data-category', cat);
+            filtersContainer.appendChild(btn);
         });
-    });
+
+        // Add Click Listener to all filter buttons
+        filtersContainer.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                filtersContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const cat = btn.getAttribute('data-category');
+                loadShopProducts(cat);
+            });
+        });
+    }
+    loadLiveCategories();
 
     // Parallax effect for the hero image
     const productImg = document.querySelector('.product-img');
