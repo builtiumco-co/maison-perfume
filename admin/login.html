@@ -5,83 +5,153 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login | Maison Élixir</title>
-  <link rel="stylesheet" href="/admin/css/main.css">
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      background-color: var(--bg-main);
-      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 30%, #1D1915 0%, #0E0C0A 75%);
+      color: #F4EFE6;
+      font-family: 'Outfit', sans-serif;
       padding: 20px;
     }
 
     .login-card {
-      background: white;
-      padding: 60px;
-      border-radius: var(--card-radius);
-      box-shadow: var(--shadow-premium);
+      background: rgba(21, 18, 16, 0.92);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(197, 168, 128, 0.25);
+      border-radius: 28px;
+      padding: 55px 45px;
       width: 100%;
-      max-width: 500px;
+      max-width: 440px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
       animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .login-header {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 40px;
     }
 
     .login-logo {
-      font-family: 'Outfit';
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: 0.2em;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.3rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      color: #F4EFE6;
+      margin-bottom: 6px;
     }
 
     .login-subtitle {
-      font-size: 0.8rem;
-      color: #999;
+      font-size: 0.75rem;
+      color: #C5A880;
       text-transform: uppercase;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.25em;
       font-weight: 700;
     }
 
-    .login-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 40px;
-      text-align: center;
-      letter-spacing: -0.02em;
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
     }
 
     .form-group label {
       display: block;
       font-weight: 700;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      color: #999;
+      color: #C5A880;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      color: #F4EFE6;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(244, 239, 230, 0.3);
+    }
+
+    .form-group input:focus {
+      border-color: #C5A880;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 15px rgba(197, 168, 128, 0.2);
+    }
+
+    .btn-login {
+      background: linear-gradient(135deg, #C5A880 0%, #A88B63 100%);
+      color: #0E0C0A;
+      border: none;
+      border-radius: 100px;
+      padding: 18px 30px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(197, 168, 128, 0.35);
+      background: linear-gradient(135deg, #D4B68D 0%, #B79A70 100%);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .error-msg {
       color: #E74C3C;
-      font-size: 0.9rem;
-      margin-top: 20px;
+      font-size: 0.85rem;
+      margin-top: 10px;
       text-align: center;
       display: none;
       font-weight: 600;
-      background: #FDEDEC;
-      padding: 15px;
-      border-radius: 12px;
+      background: rgba(231, 76, 60, 0.12);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      padding: 14px;
+      border-radius: 14px;
     }
   </style>
 </head>
@@ -90,8 +160,8 @@
 
   <div class="login-card">
     <div class="login-header">
-      <div class="login-logo">Maison Élixir</div>
-      <div class="login-subtitle">Admin Access Only</div>
+      <div class="login-logo">MAISON ÉLIXIR</div>
+      <div class="login-subtitle">Admin Portal Access</div>
     </div>
     <form id="login-form" class="admin-form">
       <div class="form-group">
@@ -102,7 +172,7 @@
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
       </div>
-      <button type="submit" class="btn btn-primary btn-full" id="login-btn">Secure Entry</button>
+      <button type="submit" class="btn-login" id="login-btn">Secure Entry</button>
       <div id="error-msg" class="error-msg"></div>
     </form>
   </div>
