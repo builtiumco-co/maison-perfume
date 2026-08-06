@@ -1484,6 +1484,98 @@ body {
   }
 }
 
+/* LUXURY BUTTON STYLES & CONTRAST FIXES */
+.btn-card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: #0E0C0A;
+  color: #C5A880 !important;
+  border: 1px solid #C5A880;
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  min-height: 44px;
+}
+
+.btn-card-action:hover {
+  background: #C5A880;
+  color: #0E0C0A !important;
+}
+
+.btn-secondary-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: transparent;
+  color: #0E0C0A !important;
+  border: 1.5px solid #0E0C0A;
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  min-height: 44px;
+}
+
+.btn-secondary-gold:hover {
+  background: #0E0C0A;
+  color: #FFFFFF !important;
+}
+
+.btn-view-details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px 16px;
+  background: #0E0C0A;
+  color: #C5A880 !important;
+  border: 1px solid #C5A880;
+  border-radius: 2px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  min-height: 40px;
+}
+
+.btn-view-details:hover {
+  background: #C5A880;
+  color: #0E0C0A !important;
+}
+
+/* High-Contrast Visibility Fixes for Narrative & Perfume Title */
+.narrative-text-content h2,
+.narrative-redesigned h2 {
+  color: #0E0C0A !important;
+  font-family: 'Cormorant Garamond', serif !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+.product-name-redesigned,
+.product-details-redesigned h3,
+.product-card-redesigned h3 {
+  color: #0E0C0A !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
 /* ==========================================================================
    MAISON ÉLIXIR MASTER MOBILE-FIRST & RESPONSIVE ENGINE
    Breakpoints: 375px | 480px | 768px | 1024px+
@@ -1523,8 +1615,9 @@ button, a.btn, a.btn-rectangular, .cart-trigger, .header-icon-btn, .mobile-menu-
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 0 16px !important;
-    height: 70px !important;
+    padding: 0 14px !important;
+    height: 65px !important;
+    position: relative !important;
   }
 
   .desktop-nav {
@@ -1544,29 +1637,34 @@ button, a.btn, a.btn-rectangular, .cart-trigger, .header-icon-btn, .mobile-menu-
   }
 
   .logo-left {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static !important;
+    transform: none !important;
+    margin-left: 8px !important;
+    flex: 1 !important;
   }
 
   .logo-left a {
-    font-size: 1.25rem !important;
-    letter-spacing: 0.12em !important;
-    white-space: nowrap;
+    font-size: 1.05rem !important;
+    letter-spacing: 0.08em !important;
+    white-space: nowrap !important;
   }
 
   .header-right-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .search-btn {
+    display: none !important; /* Hide search icon on mobile header to eliminate overlap with logo text */
   }
 
   .header-icon-btn, .cart-trigger {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   /* Hero Section Mobile */

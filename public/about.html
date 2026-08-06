@@ -2,301 +2,436 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us | MAISON ÉLIXIR</title>
-    <link rel="stylesheet" href="css/main.css">
-    <style>
-        .about-hero {
-            padding: 180px 0 100px 0;
-            background: var(--bg-hero);
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The House | MAISON ÉLIXIR</title>
+  <meta name="description"
+    content="Discover the House of Maison Élixir. High perfumery blended with rare botanical extracts and matured for six months in Lagos.">
+  <link rel="icon" type="image/png" href="assets/images/hero1.jpg">
+  <link rel="stylesheet" href="css/main.css">
 
-        .about-title {
-            font-family: var(--font-serif);
-            font-size: 5rem;
-            font-weight: 400;
-            letter-spacing: 0em;
-            margin-bottom: 30px;
-            color: var(--primary);
-        }
+  <!-- Open Graph -->
+  <meta property="og:title" content="The House | MAISON ÉLIXIR">
+  <meta property="og:description" content="Artisanal high perfumery matured for six months in Lagos.">
+  <meta property="og:image" content="assets/images/hero1.jpg">
 
-        .about-subtitle {
-            font-size: 1.2rem;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+  <style>
+    /* House Page Luxury Styles */
+    .house-hero {
+      position: relative;
+      padding: 160px 20px 100px 20px;
+      background: radial-gradient(circle at 50% 30%, #1A1612 0%, #0E0C0A 80%);
+      color: #F4EFE6;
+      text-align: center;
+      border-bottom: 1px solid rgba(197, 168, 120, 0.15);
+    }
 
-        .story-section {
-            padding: 120px 0;
-        }
+    .house-hero-subtitle {
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #C5A880;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
 
-        .story-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
+    .house-hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.8rem;
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      color: #F4EFE6;
+    }
 
-        .story-content h2 {
-            font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 400;
-            margin-bottom: 30px;
-            letter-spacing: 0em;
-        }
+    .house-hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: rgba(244, 239, 230, 0.85);
+      max-width: 720px;
+      margin: 0 auto;
+    }
 
-        .story-content p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-muted);
-            margin-bottom: 25px;
-        }
+    .house-story-section {
+      padding: 100px 0;
+      background: #FFFFFF;
+    }
 
-        .story-image {
-            width: 100%;
-            border-radius: 30px;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
-        }
+    .house-story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
 
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-top: 100px;
-        }
+    .house-story-img-wrap {
+      overflow: hidden;
+      border-radius: 4px;
+      height: 480px;
+      background: #F5F5F5;
+    }
 
-        .value-card {
-            background: var(--bg-hero);
-            padding: 50px;
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.4s;
-        }
+    .house-story-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .value-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
-        }
+    .house-story-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #0E0C0A;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
 
-        .value-icon {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            display: block;
-        }
+    .house-story-text p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #333333;
+      margin-bottom: 20px;
+    }
 
-        .value-title {
-            font-family: 'Outfit';
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
+    .house-values-section {
+      padding: 100px 0;
+      background: #FAFAFA;
+      border-top: 1px solid #E5E5E5;
+      border-bottom: 1px solid #E5E5E5;
+    }
 
-        .value-text {
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
+    .house-values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 50px;
+    }
 
-        @media (max-width: 900px) {
-            .story-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
+    .house-value-card {
+      background: #FFFFFF;
+      padding: 40px 30px;
+      border: 1px solid #E5E5E5;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
 
-            .about-title {
-                font-size: 3.5rem;
-            }
+    .house-value-card:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      transform: translateY(-4px);
+    }
 
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .house-value-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #C5A880;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .house-value-card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #0E0C0A;
+      margin-bottom: 12px;
+    }
+
+    .house-value-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #666666;
+    }
+
+    .process-section {
+      padding: 100px 0;
+      background: #0E0C0A;
+      color: #F4EFE6;
+    }
+
+    .process-section .section-title {
+      color: #F4EFE6 !important;
+      text-align: center;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 60px;
+    }
+
+    .process-step {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(197, 168, 120, 0.2);
+      padding: 36px 28px;
+      border-radius: 4px;
+    }
+
+    .process-step h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #C5A880;
+      margin-bottom: 16px;
+    }
+
+    .process-step p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(244, 239, 230, 0.8);
+    }
+
+    @media (max-width: 768px) {
+      .house-hero {
+        padding: 120px 20px 70px 20px;
+      }
+
+      .house-hero-title {
+        font-size: 2.4rem;
+      }
+
+      .house-story-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .house-story-img-wrap {
+        height: 320px;
+      }
+
+      .house-story-text h2 {
+        font-size: 2rem;
+      }
+
+      .house-values-grid,
+      .process-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+  </style>
 </head>
 
-<body>
+<body class="house-page">
 
-    <header class="header">
-        <div class="header-container reveal-visible">
-            <button class="mobile-menu-btn" id="mobile-menu-trigger" aria-label="Open Menu">
-                <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+  <!-- UNIFIED DARK HEADER -->
+  <header class="header">
+    <div class="header-container reveal-visible">
+      <button class="mobile-menu-btn" id="mobile-menu-trigger" aria-label="Open Menu">
+        <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="logo-left">
+        <a href="index.html">MAISON ÉLIXIR</a>
+      </div>
+
+      <nav class="desktop-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html" class="active">House</a>
+        <a href="about.html">Journal</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-right-actions">
+        <button class="header-icon-btn search-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+        <button class="header-icon-btn wishlist-btn" aria-label="Wishlist">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+          </svg>
+        </button>
+        <a href="cart.html" class="cart-trigger">
+          <svg class="cart-icon" viewBox="0 0 24 24">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HOUSE HERO SECTION -->
+  <section class="house-hero">
+    <div class="container reveal">
+      <span class="house-hero-subtitle">THE HOUSE OF MAISON ÉLIXIR</span>
+      <h1 class="house-hero-title">Born in Lagos.<br>Matured in Silence.</h1>
+      <p class="house-hero-desc">We craft luxury fragrances for discerning connoisseurs. Blending the world's rarest botanical extracts with an unyielding commitment to artisanal maceration.</p>
+    </div>
+  </section>
+
+  <!-- OUR STORY SECTION -->
+  <section class="house-story-section">
+    <div class="container">
+      <div class="house-story-grid reveal">
+        <div class="house-story-img-wrap">
+          <img src="https://images.unsplash.com/photo-1616949755610-8c9bbc08f138?auto=format&fit=crop&q=80&w=800" alt="Master Perfumer Maceration">
+        </div>
+        <div class="house-story-text">
+          <span class="section-subtitle">OUR PHILOSOPHY</span>
+          <h2>The Craft of Uncompromising Quality</h2>
+          <p>Maison Élixir was founded on a simple principle: true luxury cannot be mass-produced. In an era dominated by synthetic acceleration, our atelier chooses the deliberate path of slow maturation.</p>
+          <p>Every bottle originates from raw essential oils handpicked across Grasse, Madagascar, Calabria, and Morocco. Our master perfumers blend each formula by hand, steeping them in darkness for six full months until the top, heart, and base notes merge into an indelible signature scent.</p>
+          <a href="shop.html" class="btn-card-action" style="margin-top: 16px;">EXPLORE COLLECTION</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOUSE VALUES SECTION -->
+  <section class="house-values-section">
+    <div class="container reveal">
+      <div class="section-header-centered">
+        <span class="section-subtitle">OUR PILLARS</span>
+        <h2 class="section-title">The Foundation of Our Atelier</h2>
+      </div>
+
+      <div class="house-values-grid">
+        <div class="house-value-card">
+          <span class="house-value-num">01</span>
+          <h3>Rare Botanical Extracts</h3>
+          <p>We source pure, unadulterated extracts—wild-harvested oud, Calabrian bergamot, and hand-picked Damask rose petals directly from ethical growers worldwide.</p>
+        </div>
+        <div class="house-value-card">
+          <span class="house-value-num">02</span>
+          <h3>Six-Month Maturation</h3>
+          <p>Time is our most valuable ingredient. Each batch macerates for half a year in temperature-controlled darkness to unlock maximum sillage and longevity.</p>
+        </div>
+        <div class="house-value-card">
+          <span class="house-value-num">03</span>
+          <h3>Artisanal Precision</h3>
+          <p>From oil extractions to hand-filling and wax sealing, every detail is executed with meticulous craftsmanship in our Lagos atelier.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS SECTION -->
+  <section class="process-section">
+    <div class="container reveal">
+      <span class="section-subtitle" style="text-align: center; color: #C5A880 !important;">THE JOURNEY</span>
+      <h2 class="section-title">From Botanical Sourcing to Bottle</h2>
+      <div class="process-grid">
+        <div class="process-step">
+          <h3>01. Ethical Sourcing</h3>
+          <p>Partnering directly with small-scale, sustainable farms in Grasse and Africa to obtain rare essential oils with pristine purity.</p>
+        </div>
+        <div class="process-step">
+          <h3>02. Six-Month Aging</h3>
+          <p>Allowing complex fragrance compounds to bond organically over 180 days, cultivating deep, multi-layered scent evolutions on skin.</p>
+        </div>
+        <div class="process-step">
+          <h3>03. Atelier Bottling</h3>
+          <p>Hand-poured into heavy crystal glassware, polished, cataloged, and sealed with our signature emblem before release.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER SECTION -->
+  <section class="newsletter-redesigned reveal">
+    <div class="newsletter-bg-pattern"></div>
+    <div class="container">
+      <div class="newsletter-content-redesigned">
+        <div class="newsletter-text">
+          <h2>The Circle Awaits</h2>
+          <p>Receive exclusive early access to new releases, limited editions, and insider stories from our atelier.</p>
+        </div>
+        <form class="newsletter-form-redesigned" name="newsletter" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="newsletter">
+          <div class="form-group-newsletter">
+            <input type="email" name="email" placeholder="Your email address" autocomplete="email" required>
+            <button type="submit" class="btn-newsletter-submit">
+              <span>SUBSCRIBE</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" fill="none"/></svg>
             </button>
+          </div>
+          <p class="newsletter-note">We respect your privacy. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </div>
+  </section>
 
-            <div class="logo-left">
-                <a href="index.html">MAISON ÉLIXIR</a>
-            </div>
-
-            <nav class="desktop-nav">
-                <a href="index.html">Home</a>
-                <a href="shop.html">Shop</a>
-                <a href="about.html">House</a>
-                <a href="about.html">Journal</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-
-            <div class="header-right-actions">
-                <button class="header-icon-btn search-btn" aria-label="Search">
-                    <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </button>
-                <button class="header-icon-btn wishlist-btn" aria-label="Wishlist">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
-                    </svg>
-                </button>
-                <a href="cart.html" class="cart-trigger">
-                    <svg class="cart-icon" viewBox="0 0 24 24">
-                        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4H6zM3 6h18M16 10a4 4 0 01-8 0" />
-                    </svg>
-                    <span class="cart-count" id="cart-count">0</span>
-                </a>
-            </div>
+  <!-- REDESIGNED FOOTER -->
+  <footer class="footer-redesigned">
+    <div class="container">
+      <div class="footer-content-grid">
+        <div class="footer-brand-col">
+          <h3 class="footer-brand-name">MAISON<br>ÉLIXIR</h3>
+          <p class="footer-brand-desc">Artisanal luxury fragrances. Handcrafted in Lagos with the world's finest ingredients.</p>
+          <div class="social-links-footer">
+            <a href="#" title="Instagram">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0z"/></svg>
+            </a>
+            <a href="#" title="Twitter">
+              <svg viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417a9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+            </a>
+            <a href="#" title="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+            </a>
+          </div>
         </div>
-    </header>
 
-    <section class="about-hero">
-        <div class="container reveal">
-            <h1 class="about-title">THE ART OF SCENT</h1>
-            <p class="about-subtitle">Maison Élixir. Experience the pinnacle of luxury fragrances, hand-blended and aged to perfection in Lagos.</p>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Maison</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html">Master Perfumers</a></li>
+            <li><a href="about.html">The Process</a></li>
+            <li><a href="about.html">Sustainability</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
         </div>
-    </section>
 
-    <section class="story-section">
-        <div class="container">
-            <div class="story-grid reveal">
-                <div class="story-content">
-                    <h2>Our Story</h2>
-                    <p>Maison Élixir was born from a singular vision: to craft luxury fragrances that capture the bold, dynamic essence of Lagos while utilizing the highest standards of international high-end perfumery.</p>
-                    <p>Every bottle is a testament to our slow maturation philosophy. We don't rush. We don't mass-produce. We source raw, organic materials—precious oud wood, rare damask roses, and sweet vanilla—and let them steep in organic oils over months.</p>
-                    <a href="shop.html" class="shop-btn"
-                        style="padding: 18px 40px; text-decoration:none; display:inline-block; margin-top:20px;">Shop
-                        The Collection</a>
-                </div>
-                <div class="story-image-wrap">
-                    <img src="assets/images/about_studio.jpg" alt="Artisan at work">
-                </div>
-            </div>
-
-            <div class="values-grid reveal">
-                <div class="value-card">
-                    <span class="value-icon">🇳🇬</span>
-                    <h3 class="value-title">Lagos Heritage</h3>
-                    <p class="value-text">Rooted in the vibrant energy of Lagos, capturing local soul in every olfactory profile.</p>
-                </div>
-                <div class="value-card">
-                    <span class="value-icon">🧪</span>
-                    <h3 class="value-title">Perfumer Blended</h3>
-                    <p class="value-text">Hand-blended by master perfumers, ensuring every batch is distinct and long-lasting.</p>
-                </div>
-                <div class="value-card">
-                    <span class="value-icon">🌱</span>
-                    <h3 class="value-title">Ethical Sourcing</h3>
-                    <p class="value-text">We source premium, organic ingredients ethically from sustainable local and global suppliers.</p>
-                </div>
-            </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Shop</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Fragrances</a></li>
+            <li><a href="shop.html">Eau de Parfum</a></li>
+            <li><a href="shop.html">Extrait de Parfum</a></li>
+            <li><a href="shop.html">Eau de Toilette</a></li>
+            <li><a href="shop.html">Best Sellers</a></li>
+          </ul>
         </div>
-    </section>
 
-    <section class="process-section section-padding reveal">
-        <div class="container">
-            <h2 class="section-title">THE MATURATION PROCESS</h2>
-            <div class="process-grid">
-                <div class="process-step">
-                    <h3>01. Sourcing</h3>
-                    <p>We source pure essential oils and extracts, partnering with ethical organic growers to gather raw oud, rare rose petals, and citrus essences.</p>
-                </div>
-                <div class="process-step">
-                    <h3>02. Aging</h3>
-                    <p>Our perfumers age each fragrance blend for a minimum of six months. This slow maturation allows the top, middle, and base notes to seamlessly harmonize.</p>
-                </div>
-                <div class="process-step">
-                    <h3>03. Bottling</h3>
-                    <p>Each bottle is filled, sealed, and inspected by hand, before being nestled in our signature high-end packaging.</p>
-                </div>
-            </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Support</h4>
+          <ul class="footer-links">
+            <li><a href="contact.html">Shipping & Returns</a></li>
+            <li><a href="contact.html">Size Guide</a></li>
+            <li><a href="contact.html">FAQ</a></li>
+            <li><a href="contact.html">Track Order</a></li>
+            <li><a href="contact.html">Care Instructions</a></li>
+          </ul>
         </div>
-    </section>
+      </div>
 
-    <section class="narrative-section">
-        <div class="narrative-bg">
-            <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=1600"
-                alt="Sustainable Luxury">
+      <div class="footer-bottom-redesigned">
+        <p>&copy; 2026 Maison Élixir. All rights reserved. Handcrafted in Lagos.</p>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookies</a>
         </div>
-        <div class="narrative-overlay"></div>
-        <div class="container">
-            <div class="narrative-content reveal">
-                <h2>CONSCIOUS LUXURY</h2>
-                <p>We believe luxury shouldn't cost the Earth. By sourcing ingredients from sustainable local farms and using hand-blown recyclable glass bottles, we craft premium fragrances that respect both nature and community.</p>
-            </div>
-        </div>
-    </section>
+      </div>
+    </div>
+  </footer>
 
-    <section class="newsletter reveal">
-        <div class="container">
-            <div class="newsletter-content">
-                <h2>JOIN THE CIRCLE</h2>
-                <p>Be the first to know about limited releases and artisanal updates.</p>
-                <form class="newsletter-form" name="newsletter" method="POST" data-netlify="true">
-                    <input type="hidden" name="form-name" value="newsletter">
-                    <input type="email" name="email" placeholder="ENTER YOUR EMAIL" autocomplete="email" required>
-                    <button type="submit">SUBSCRIBE</button>
-                </form>
-            </div>
-        </div>
-    </section>
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/main.js"></script>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <div class="footer-logo">ANTIGRAVITY</div>
-                    <p class="footer-desc">Crafting the future of luxury fragrances, one bespoke bottle at a time.
-                        Designed in Lagos, worn everywhere.</p>
-                </div>
-                <div class="footer-column">
-                    <h4>SHOP</h4>
-                    <ul class="footer-links">
-                        <li><a href="shop.html">MENS</a></li>
-                        <li><a href="shop.html">WOMENS</a></li>
-                        <li><a href="shop.html">UNISEX</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>COMPANY</h4>
-                    <ul class="footer-links">
-                        <li><a href="about.html">OUR STORY</a></li>
-                        <li><a href="contact.html">CONTACT</a></li>
-                        <li><a href="#">SUSTAINABILITY</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>LEGAL</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">PRIVACY POLICY</a></li>
-                        <li><a href="#">TERMS OF SERVICE</a></li>
-                        <li><a href="#">REFUND POLICY</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <span>© 2026 ANTIGRAVITY PERFUMES. ALL RIGHTS RESERVED.</span>
-                <span>LAGOS, NIGERIA</span>
-            </div>
-        </div>
-    </footer>
-
-    +
-
-    <!-- Supabase JS Client (Required for main.js) -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/main.js"></script>
 </body>
 
 </html>

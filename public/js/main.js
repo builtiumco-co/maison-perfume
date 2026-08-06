@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <h3 class="product-name-redesigned">${escapeHTML(product.name)}</h3>
                             <p class="product-note">${escapeHTML(product.category || 'Eau de Parfum')} | ${escapeHTML(product.sizes || '100ml')}</p>
                             <div class="product-price-redesigned">₦${Number(product.price).toLocaleString()}</div>
-                            <span class="link-underline">View Details</span>
+                            <button class="btn-view-details">VIEW DETAILS</button>
                         </div>
                     `;
                 } else {
