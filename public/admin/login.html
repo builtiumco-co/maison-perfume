@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Maison Élixir</title>
+  <link rel="stylesheet" href="/admin/css/main.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: var(--bg-main);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: white;
+      padding: 60px;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow-premium);
+      width: 100%;
+      max-width: 500px;
+      animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .login-logo {
+      font-family: 'Outfit';
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .login-subtitle {
+      font-size: 0.8rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 700;
+    }
+
+    .login-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 40px;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 15px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #999;
+    }
+
+    .error-msg {
+      color: #E74C3C;
+      font-size: 0.9rem;
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+      font-weight: 600;
+      background: #FDEDEC;
+      padding: 15px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-logo">Maison Élixir</div>
+      <div class="login-subtitle">Admin Access Only</div>
+    </div>
+    <form id="login-form" class="admin-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="admin@maisonelixir.com" autocomplete="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="login-btn">Secure Entry</button>
+      <div id="error-msg" class="error-msg"></div>
+    </form>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://myrqlqstzakmnxfenlzg.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15cnFscXN0emFrbW54ZmVubHpnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NzczMTAsImV4cCI6MjEwMTQ1MzMxMH0.OovcIHrIY30kAVs2CU1DI6nhU6tpVpD0N4QHTSAY2ss';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const loginForm = document.getElementById('login-form');
+    const errorEl = document.getElementById('error-msg');
+    const btn = document.getElementById('login-btn');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Authenticating...';
+      errorEl.style.display = 'none';
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        errorEl.textContent = error.message;
+        errorEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Secure Entry';
+      } else {
+        localStorage.setItem('admin_last_action', Date.now());
+        window.location.href = 'index.html';
+      }
+    });
+
+    async function checkAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session) window.location.href = 'index.html';
+    }
+    checkAuth();
+  </script>
+</body>
+
+</html>
